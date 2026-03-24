@@ -94,7 +94,7 @@ body {
 }
 
 .countdownEyebrow {
-  color: lime !important;
+  color: #00ed64 !important;
   font-size: 0.82rem;
   font-weight: 700;
   letter-spacing: 0.18em;
@@ -103,6 +103,8 @@ body {
 
 .countdownTitle {
   margin-top: 0.45rem;
+  font-family: var(--font-h2), var(--font-heading), sans-serif;
+  font-weight: 400;
   color: #0d4675 !important;
   text-align: center;
   text-transform: uppercase;
@@ -134,9 +136,10 @@ body {
 }
 
 .countdownValue {
+  font-family: var(--font-h2), var(--font-heading), sans-serif;
   color: #0d4675;
   font-size: clamp(2.2rem, 7vw, 5.2rem);
-  font-weight: 400;
+  font-weight: 700;
   line-height: 0.92;
   letter-spacing: -0.06em;
 }
@@ -229,6 +232,8 @@ body {
 }
 
 .newsHeroTitle {
+  font-family: var(--font-h2), var(--font-heading), sans-serif;
+  font-weight: 400;
   max-width: 12ch;
   color: #0d4675 !important;
   font-size: clamp(2.2rem, 7vw, 5.2rem) !important;
@@ -368,9 +373,9 @@ button,
 }
 
 .joinHeroTrigger {
-  background: lime !important;
+  background: #00ed64 !important;
   color: #0d4675 !important;
-  border-color: lime !important;
+  border-color: #00ed64 !important;
   font-weight: 700 !important;
 }
 

@@ -1,6 +1,5 @@
 "use client";
 
-import { Boldonse } from "next/font/google";
 import { useEffect, useState } from "react";
 
 import { Column, Heading, Row, Text } from "@once-ui-system/core";
@@ -45,12 +44,6 @@ function pad(value: number) {
   return value.toString().padStart(2, "0");
 }
 
-const countdownFont = Boldonse({
-  subsets: ["latin"],
-  weight: ["400"],
-  display: "swap",
-});
-
 export function CountdownBlock({ targetIso }: CountdownBlockProps) {
   const [countdown, setCountdown] = useState<CountdownParts>({
     days: 0,
@@ -80,7 +73,7 @@ export function CountdownBlock({ targetIso }: CountdownBlockProps) {
         <Heading
           as="h2"
           variant="display-strong-m"
-          className={`${countdownFont.className} countdownTitle`}
+          className="countdownTitle"
         >
           Dias para el cambio
         </Heading>
@@ -95,28 +88,22 @@ export function CountdownBlock({ targetIso }: CountdownBlockProps) {
           className="countdownGrid"
         >
           <div className="countdownUnit">
-            <span className={`${countdownFont.className} countdownValue`}>{countdown.days}</span>
+            <span className="countdownValue">{countdown.days}</span>
             <span className="countdownLabel">Dias</span>
           </div>
           <span className="countdownDivider">:</span>
           <div className="countdownUnit">
-            <span className={`${countdownFont.className} countdownValue`}>
-              {pad(countdown.hours)}
-            </span>
+            <span className="countdownValue">{pad(countdown.hours)}</span>
             <span className="countdownLabel">Horas</span>
           </div>
           <span className="countdownDivider">:</span>
           <div className="countdownUnit">
-            <span className={`${countdownFont.className} countdownValue`}>
-              {pad(countdown.minutes)}
-            </span>
+            <span className="countdownValue">{pad(countdown.minutes)}</span>
             <span className="countdownLabel">Minutos</span>
           </div>
           <span className="countdownDivider">:</span>
           <div className="countdownUnit">
-            <span className={`${countdownFont.className} countdownValue`}>
-              {pad(countdown.seconds)}
-            </span>
+            <span className="countdownValue">{pad(countdown.seconds)}</span>
             <span className="countdownLabel">Segundos</span>
           </div>
         </Row>

@@ -1,0 +1,303 @@
+{
+  "name": "Lito - Sumate a Sheets y Email",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "lito-signup",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook-lito-signup",
+      "name": "Webhook Lito Signup",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        240,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const payload = $json.body ?? $json;\nconst headers = $json.headers ?? {};\n\nconst expectedSecret = $env.N8N_LITO_SIGNUP_WEBHOOK_SECRET || '';\nconst receivedSecret = headers['x-lito-signup-secret'] || headers['X-Lito-Signup-Secret'] || '';\n\nif (expectedSecret && receivedSecret !== expectedSecret) {\n  throw new Error('Unauthorized webhook request');\n}\n\nconst clean = (value) => (typeof value === 'string' ? value.trim() : '');\nconst nombre = clean(payload.nombre);\nconst email = clean(payload.email).toLowerCase();\nconst telefono = clean(payload.telefono);\nconst estacionServicio = clean(payload.estacionServicio);\nconst funcion = clean(payload.funcion);\nconst mensaje = clean(payload.mensaje);\nconst source = clean(payload.source) || 'web-sumate-modal';\nconst receivedAt = clean(payload.receivedAt) || new Date().toISOString();\nconst metadata = payload.metadata ?? {};\nconst userAgent = clean(metadata.userAgent) || 'n/d';\nconst referer = clean(metadata.referer) || 'n/d';\nconst forwardedFor = clean(metadata.forwardedFor) || 'n/d';\n\nif (!nombre || !email || !telefono) {\n  throw new Error('Missing required fields');\n}\n\nif (!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)) {\n  throw new Error('Invalid email');\n}\n\nconst campaignName = $env.LITO_SIGNUP_CAMPAIGN_NAME || 'Lista Azul y Blanca';\nconst localReceivedAt = new Date(receivedAt).toLocaleString('es-AR', {\n  timeZone: 'America/Argentina/Buenos_Aires',\n  dateStyle: 'short',\n  timeStyle: 'short',\n});\nconst sheetId = $env.LITO_SIGNUP_SHEET_ID || '';\nconst sheetUrl = sheetId ? `https://docs.google.com/spreadsheets/d/${sheetId}` : '';\n\nconst subscriberSubject = `Gracias por sumarte a ${campaignName}`;\nconst subscriberHtml = [\n  `<p>Hola ${nombre},</p>`,\n  `<p>Gracias por sumarte a <strong>${campaignName}</strong>. Recibimos tus datos y el equipo se va a poner en contacto pronto.</p>`,\n  '<p>Estos son los datos que nos compartiste:</p>',\n  '<ul>',\n  `<li><strong>Nombre:</strong> ${nombre}</li>`,\n  `<li><strong>Email:</strong> ${email}</li>`,\n  `<li><strong>Telefono:</strong> ${telefono}</li>`,\n  `<li><strong>Estacion de servicio:</strong> ${estacionServicio || 'No informada'}</li>`,\n  `<li><strong>Funcion:</strong> ${funcion || 'No informada'}</li>`,\n  '</ul>',\n  mensaje ? `<p><strong>Mensaje:</strong> ${mensaje}</p>` : '',\n  '<p>Gracias por ser parte.</p>',\n].filter(Boolean).join('');\n\nconst teamSubject = `Nueva suscripcion Sumate: ${nombre}`;\nconst teamHtml = [\n  '<p>Llego una nueva suscripcion desde el modal Sumate.</p>',\n  '<ul>',\n  `<li><strong>Nombre:</strong> ${nombre}</li>`,\n  `<li><strong>Email:</strong> ${email}</li>`,\n  `<li><strong>Telefono:</strong> ${telefono}</li>`,\n  `<li><strong>Estacion de servicio:</strong> ${estacionServicio || 'No informada'}</li>`,\n  `<li><strong>Funcion:</strong> ${funcion || 'No informada'}</li>`,\n  `<li><strong>Origen:</strong> ${source}</li>`,\n  `<li><strong>Fecha:</strong> ${localReceivedAt}</li>`,\n  `<li><strong>Referer:</strong> ${referer}</li>`,\n  `<li><strong>IP:</strong> ${forwardedFor}</li>`,\n  '</ul>',\n  mensaje ? `<p><strong>Mensaje:</strong><br>${mensaje}</p>` : '<p><strong>Mensaje:</strong> No dejo mensaje.</p>',\n  sheetUrl ? `<p>Hoja: <a href=\"${sheetUrl}\">${sheetUrl}</a></p>` : '',\n].filter(Boolean).join('');\n\nreturn [{\n  json: {\n    nombre,\n    email,\n    telefono,\n    estacion_servicio: estacionServicio,\n    funcion,\n    mensaje,\n    source,\n    received_at: receivedAt,\n    received_at_local: localReceivedAt,\n    referer,\n    forwarded_for: forwardedFor,\n    user_agent: userAgent,\n    subscriberSubject,\n    subscriberHtml,\n    teamSubject,\n    teamHtml,\n  },\n}];"
+      },
+      "id": "code-validate-signup",
+      "name": "Validar y Preparar Sumate",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        520,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $env.LITO_SIGNUP_SHEET_ID }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $env.LITO_SIGNUP_SHEET_NAME || 'Sumate' }}",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "received_at": "={{ $json.received_at }}",
+            "received_at_local": "={{ $json.received_at_local }}",
+            "nombre": "={{ $json.nombre }}",
+            "email": "={{ $json.email }}",
+            "telefono": "={{ $json.telefono }}",
+            "estacion_servicio": "={{ $json.estacion_servicio }}",
+            "funcion": "={{ $json.funcion }}",
+            "mensaje": "={{ $json.mensaje }}",
+            "source": "={{ $json.source }}",
+            "referer": "={{ $json.referer }}",
+            "forwarded_for": "={{ $json.forwarded_for }}",
+            "user_agent": "={{ $json.user_agent }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "received_at",
+              "displayName": "received_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "received_at_local",
+              "displayName": "received_at_local",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "nombre",
+              "displayName": "nombre",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "telefono",
+              "displayName": "telefono",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "estacion_servicio",
+              "displayName": "estacion_servicio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "funcion",
+              "displayName": "funcion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "mensaje",
+              "displayName": "mensaje",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "source",
+              "displayName": "source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "referer",
+              "displayName": "referer",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "forwarded_for",
+              "displayName": "forwarded_for",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "user_agent",
+              "displayName": "user_agent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "google-sheets-signup",
+      "name": "Guardar en Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        800,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "fromEmail": "={{ $env.LITO_SIGNUP_FROM_EMAIL }}",
+        "toEmail": "={{ $env.LITO_SIGNUP_NOTIFY_EMAIL }}",
+        "subject": "={{ $('Validar y Preparar Sumate').item.json.teamSubject }}",
+        "html": "={{ $('Validar y Preparar Sumate').item.json.teamHtml }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "id": "email-team-signup",
+      "name": "Avisar al Equipo",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        1080,
+        220
+      ]
+    },
+    {
+      "parameters": {
+        "fromEmail": "={{ $env.LITO_SIGNUP_FROM_EMAIL }}",
+        "toEmail": "={{ $('Validar y Preparar Sumate').item.json.email }}",
+        "subject": "={{ $('Validar y Preparar Sumate').item.json.subscriberSubject }}",
+        "html": "={{ $('Validar y Preparar Sumate').item.json.subscriberHtml }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "id": "email-subscriber-signup",
+      "name": "Agradecer al Suscriptor",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        1080,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { ok: true, message: 'Gracias. Ya enviamos tus datos al equipo.' } }}"
+      },
+      "id": "respond-signup-webhook",
+      "name": "Responder Webhook Signup",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        1360,
+        300
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook Lito Signup": {
+      "main": [
+        [
+          {
+            "node": "Validar y Preparar Sumate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validar y Preparar Sumate": {
+      "main": [
+        [
+          {
+            "node": "Guardar en Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Guardar en Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Avisar al Equipo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Avisar al Equipo": {
+      "main": [
+        [
+          {
+            "node": "Agradecer al Suscriptor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agradecer al Suscriptor": {
+      "main": [
+        [
+          {
+            "node": "Responder Webhook Signup",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "lito-signup-to-sheets-email-v1"
+}

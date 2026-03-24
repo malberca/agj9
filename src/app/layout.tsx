@@ -3,7 +3,7 @@ import "@once-ui-system/core/css/tokens.css";
 import "@/resources/custom.css";
 
 import classNames from "classnames";
-import { Jost } from "next/font/google";
+import { Anton } from "next/font/google";
 
 import {
   Background,
@@ -17,7 +17,7 @@ import {
 import { Footer, Header, RouteGuard, Providers, LitoChat } from "@/components";
 import { baseURL, effects, fonts, style, dataStyle, home } from "@/resources";
 
-const h2Font = Jost({
+const h2Font = Anton({
   subsets: ["latin"],
   weight: ["400"],
   display: "swap",
@@ -52,8 +52,26 @@ export default async function RootLayout({
         fonts.code.variable,
         h2Font.variable,
       )}
-    >
+      >
       <head>
+        <link rel="apple-touch-icon" sizes="180x180" href="/images/logo/favicon/apple-touch-icon.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/images/logo/favicon/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/images/logo/favicon/favicon-16x16.png" />
+        <link rel="icon" href="/images/logo/favicon/favicon.ico" />
+        <link rel="manifest" href="/images/logo/favicon/site.webmanifest" />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="192x192"
+          href="/images/logo/favicon/android-chrome-192x192.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="512x512"
+          href="/images/logo/favicon/android-chrome-512x512.png"
+        />
+        <meta name="theme-color" content="#0D4675" />
         <script
           id="theme-init"
           dangerouslySetInnerHTML={{

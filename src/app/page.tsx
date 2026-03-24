@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { Boldonse } from "next/font/google";
 import cover01Image from "../../public/images/projects/project-01/cover-01.jpg";
 import cover02Image from "../../public/images/projects/project-01/cover-02.jpg";
 import cover03Image from "../../public/images/projects/project-01/cover-03.webp";
@@ -20,12 +19,6 @@ import {
 } from "@once-ui-system/core";
 import { CountdownBlock, JoinModalButton } from "@/components";
 import { about, baseURL, home, person } from "@/resources";
-
-const heroTitleFont = Boldonse({
-  subsets: ["latin"],
-  weight: ["400"],
-  display: "swap",
-});
 
 const briefs = [
   {
@@ -129,7 +122,7 @@ export default function Home() {
               <Heading
                 as="h1"
                 wrap="balance"
-                className={`${heroTitleFont.className} newsHeroTitle`}
+                className="newsHeroTitle"
               >
                 Un nuevo sindicato es posible.
               </Heading>

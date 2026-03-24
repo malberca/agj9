@@ -19,7 +19,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const payload = $json.body ?? $json;\nconst headers = $json.headers ?? {};\n\nconst expectedSecret = $env.N8N_LITO_WEBHOOK_SECRET || '';\nconst receivedSecret = headers['x-lito-secret'] || headers['X-Lito-Secret'] || '';\n\nif (expectedSecret && receivedSecret !== expectedSecret) {\n  throw new Error('Unauthorized webhook request');\n}\n\nconst message = (payload.message || '').trim();\nif (!message) {\n  throw new Error('Missing message');\n}\n\nconst sessionId = payload.sessionId || `lito-${Date.now()}`;\nconst pagePath = payload.pagePath || '/';\nconst origin = payload.origin || 'web-lito';\nconst receivedAt = payload.receivedAt || new Date().toISOString();\nconst userAgent = payload.metadata?.userAgent || 'n/d';\nconst referer = payload.metadata?.referer || 'n/d';\nconst forwardedFor = payload.metadata?.forwardedFor || 'n/d';\n\nconst telegramText = [\n  'Nuevo mensaje desde la web',\n  '',\n  `Sesion: ${sessionId}`,\n  `Origen: ${origin}`,\n  `Pagina: ${pagePath}`,\n  `Fecha: ${receivedAt}`,\n  `IP: ${forwardedFor}`,\n  `Referer: ${referer}`,\n  `User-Agent: ${userAgent}`,\n  '',\n  'Mensaje:',\n  message,\n  '',\n  'Para responder en vivo, usa este sessionId en el flujo de respuesta.'\n].join('\\n');\n\nreturn [{\n  json: {\n    ok: true,\n    sessionId,\n    telegramChatId: $env.TELEGRAM_CHAT_ID,\n    telegramText\n  }\n}];"
+        "jsCode": "const payload = $json.body ?? $json;\nconst headers = $json.headers ?? {};\n\nconst expectedSecret = $env.N8N_LITO_WEBHOOK_SECRET || '';\nconst receivedSecret = headers['x-lito-secret'] || headers['X-Lito-Secret'] || '';\n\nif (expectedSecret && receivedSecret !== expectedSecret) {\n  throw new Error('Unauthorized webhook request');\n}\n\nconst message = (payload.message || '').trim();\nif (!message) {\n  throw new Error('Missing message');\n}\n\nconst sessionId = payload.sessionId || `lito-${Date.now()}`;\nconst pagePath = payload.pagePath || '/';\nconst origin = payload.origin || 'web-lito';\nconst receivedAt = payload.receivedAt || new Date().toISOString();\nconst userAgent = payload.metadata?.userAgent || 'n/d';\nconst referer = payload.metadata?.referer || 'n/d';\nconst forwardedFor = payload.metadata?.forwardedFor || 'n/d';\n\nconst telegramText = [\n  'Nuevo mensaje para Lito',\n  '',\n  `Sesion: ${sessionId}`,\n  `Origen: ${origin}`,\n  `Pagina: ${pagePath}`,\n  `Fecha: ${receivedAt}`,\n  `IP: ${forwardedFor}`,\n  `Referer: ${referer}`,\n  `User-Agent: ${userAgent}`,\n  '',\n  'Mensaje del visitante:',\n  message,\n  '',\n  'Responder directamente a este mensaje en Telegram para devolver la respuesta a la web.',\n  `Comando alternativo: /lito ${sessionId} tu respuesta`\n].join('\\n');\n\nreturn [{\n  json: {\n    ok: true,\n    sessionId,\n    telegramChatId: $env.TELEGRAM_CHAT_ID,\n    telegramText\n  }\n}];"
       },
       "id": "code-validate-format",
       "name": "Validar y Formatear",
@@ -51,7 +51,7 @@
     {
       "parameters": {
         "respondWith": "json",
-        "responseBody": "={{ { ok: true, sessionId: $json.sessionId, message: 'Lito ya le llevo tu mensaje al equipo.' } }}"
+        "responseBody": "={{ { ok: true, sessionId: $json.sessionId, message: 'Cacho ya recibio tu mensaje. Cuando responda, te llega por aca.' } }}"
       },
       "id": "respond-webhook",
       "name": "Responder Webhook",

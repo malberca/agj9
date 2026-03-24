@@ -40,6 +40,41 @@ Add a new .mdx file to src/app/blog/posts or src/app/work/projects
 
 Magic Portfolio was built with [Once UI](https://once-ui.com) for [Next.js](https://nextjs.org). It requires Node.js v18.17+.
 
+## n8n workflows
+
+This project includes ready-to-import n8n workflows in `n8n/`:
+
+- `n8n/lito-webhook-to-telegram.json`: web chat `Lito` -> Telegram
+- `n8n/lito-telegram-to-web-reply.json`: Telegram -> web chat `Lito`
+- `n8n/lito-signup-to-sheets-and-email.json`: `Sumate!` -> Google Sheets + thank-you email + internal notification email
+- `n8n/SETUP.md`: activation checklist, credentials, env vars and Google Sheet columns
+
+### Next.js environment variables
+
+- `N8N_LITO_WEBHOOK_URL`
+- `N8N_LITO_WEBHOOK_SECRET`
+- `N8N_LITO_REPLY_WEBHOOK_SECRET`
+- `N8N_LITO_SIGNUP_WEBHOOK_URL`
+- `N8N_LITO_SIGNUP_WEBHOOK_SECRET`
+- `LITO_CHAT_STORE_DIR` (optional, defaults to `/tmp/lito-chat-store`)
+
+### n8n environment variables used by the signup workflow
+
+- `N8N_LITO_SIGNUP_WEBHOOK_SECRET`
+- `LITO_SIGNUP_SHEET_ID`
+- `LITO_SIGNUP_SHEET_NAME`
+- `LITO_SIGNUP_FROM_EMAIL`
+- `LITO_SIGNUP_NOTIFY_EMAIL`
+- `LITO_SIGNUP_CAMPAIGN_NAME` (optional)
+
+### n8n environment variables used by the chat workflows
+
+- `N8N_LITO_WEBHOOK_SECRET`
+- `N8N_LITO_REPLY_WEBHOOK_SECRET`
+- `TELEGRAM_BOT_TOKEN`
+- `TELEGRAM_CHAT_ID`
+- `LITO_WEB_REPLY_URL`
+
 ## Documentation
 
 Docs available at: [docs.once-ui.com](https://docs.once-ui.com/docs/magic-portfolio/quick-start)
