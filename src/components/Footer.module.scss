@@ -5,3 +5,49 @@
         text-align: center;
     }
 }
+
+.footerBlue,
+.footerBlue * {
+    color: #0d4675 !important;
+}
+
+.footerLine {
+    width: fit-content;
+    max-width: 100%;
+    margin: 0 auto;
+    justify-content: center;
+    line-height: 1.2;
+    text-align: center;
+}
+
+.footerYear {
+    font-weight: 700 !important;
+}
+
+.footerMeta {
+    font-weight: 300 !important;
+}
+
+.footerCampaignLogos {
+    width: fit-content;
+    max-width: 100%;
+    margin: 0 auto;
+    justify-content: center;
+    align-items: center;
+}
+
+.footerCampaignLogoFrame {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 6.75rem;
+    height: 3.5rem;
+}
+
+.footerCampaignLogo {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}

@@ -13,30 +13,24 @@ import {
 } from "@/types";
 import { home } from "./index";
 
-// IMPORTANT: Replace with your own domain address - it's used for SEO in meta tags and schema
-const baseURL: string = "https://demo.magic-portfolio.com";
+const baseURL: string = "https://agj9.ar";
 
 const routes: RoutesConfig = {
   "/": true,
-  "/about": true,
-  "/work": true,
-  "/blog": true,
-  "/gallery": true,
+  "/about": false,
+  "/work": false,
+  "/blog": false,
+  "/gallery": false,
 };
 
 const display: DisplayConfig = {
-  location: true,
-  time: true,
-  themeSwitcher: true,
+  location: false,
+  time: false,
+  themeSwitcher: false,
 };
 
-// Enable password protection on selected routes
-// Set password in the .env file, refer to .env.example
-const protectedRoutes: ProtectedRoutesConfig = {
-  "/work/automate-design-handovers-with-a-figma-to-code-pipeline": true,
-};
+const protectedRoutes: ProtectedRoutesConfig = {};
 
-// Import and set font for each variant
 import { Geist } from "next/font/google";
 import { Geist_Mono } from "next/font/google";
 
@@ -65,30 +59,29 @@ const code = Geist_Mono({
 });
 
 const fonts: FontsConfig = {
-  heading: heading,
-  body: body,
-  label: label,
-  code: code,
+  heading,
+  body,
+  label,
+  code,
 };
 
-// default customization applied to the HTML in the main layout.tsx
 const style: StyleConfig = {
-  theme: "system", // dark | light | system
-  neutral: "gray", // sand | gray | slate | mint | rose | dusk | custom
-  brand: "cyan", // blue | indigo | violet | magenta | pink | red | orange | yellow | moss | green | emerald | aqua | cyan | custom
-  accent: "red", // blue | indigo | violet | magenta | pink | red | orange | yellow | moss | green | emerald | aqua | cyan | custom
-  solid: "contrast", // color | contrast
-  solidStyle: "flat", // flat | plastic
-  border: "playful", // rounded | playful | conservative | sharp
-  surface: "translucent", // filled | translucent
-  transition: "all", // all | micro | macro
-  scaling: "100", // 90 | 95 | 100 | 105 | 110
+  theme: "light",
+  neutral: "sand",
+  brand: "blue",
+  accent: "cyan",
+  solid: "contrast",
+  solidStyle: "flat",
+  border: "playful",
+  surface: "translucent",
+  transition: "all",
+  scaling: "100",
 };
 
 const dataStyle: DataStyleConfig = {
-  variant: "gradient", // flat | gradient | outline
-  mode: "categorical", // categorical | divergent | sequential
-  height: 24, // default chart height
+  variant: "gradient",
+  mode: "categorical",
+  height: 24,
   axis: {
     stroke: "var(--neutral-alpha-weak)",
   },
@@ -107,19 +100,19 @@ const effects: EffectsConfig = {
     radius: 100,
   },
   gradient: {
-    display: false,
-    opacity: 100,
+    display: true,
+    opacity: 45,
     x: 50,
-    y: 60,
-    width: 100,
-    height: 50,
+    y: 20,
+    width: 80,
+    height: 40,
     tilt: 0,
-    colorStart: "accent-background-strong",
+    colorStart: "brand-background-strong",
     colorEnd: "page-background",
   },
   dots: {
-    display: true,
-    opacity: 40,
+    display: false,
+    opacity: 0,
     size: "2",
     color: "brand-background-strong",
   },
@@ -141,17 +134,17 @@ const effects: EffectsConfig = {
 };
 
 const mailchimp: MailchimpConfig = {
-  action: "https://url/subscribe/post?parameters",
+  action: "",
   effects: {
     mask: {
-      cursor: true,
+      cursor: false,
       x: 50,
       y: 0,
       radius: 100,
     },
     gradient: {
-      display: true,
-      opacity: 90,
+      display: false,
+      opacity: 0,
       x: 50,
       y: 0,
       width: 50,
@@ -161,8 +154,8 @@ const mailchimp: MailchimpConfig = {
       colorEnd: "static-transparent",
     },
     dots: {
-      display: true,
-      opacity: 20,
+      display: false,
+      opacity: 0,
       size: "2",
       color: "brand-on-background-weak",
     },
@@ -184,35 +177,32 @@ const mailchimp: MailchimpConfig = {
   },
 };
 
-// default schema data
 const schema: SchemaConfig = {
   logo: "",
   type: "Organization",
-  name: "Once UI",
+  name: "Agrupacion Nueve de Julio",
   description: home.description,
-  email: "lorant@once-ui.com",
+  email: "contacto@agj9.ar",
 };
 
-// social links
 const sameAs: SameAsConfig = {
-  threads: "https://www.threads.com/@once_ui",
-  linkedin: "https://www.linkedin.com/company/once-ui/",
-  discord: "https://discord.com/invite/5EyAQ4eNdS",
+  threads: "",
+  linkedin: "",
+  discord: "",
 };
 
-// social sharing configuration for blog posts
 const socialSharing: SocialSharingConfig = {
-  display: true,
+  display: false,
   platforms: {
-    x: true,
-    linkedin: true,
+    x: false,
+    linkedin: false,
     facebook: false,
     pinterest: false,
     whatsapp: false,
     reddit: false,
     telegram: false,
-    email: true,
-    copyLink: true,
+    email: false,
+    copyLink: false,
   },
 };
 

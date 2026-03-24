@@ -3,6 +3,7 @@ import "@once-ui-system/core/css/tokens.css";
 import "@/resources/custom.css";
 
 import classNames from "classnames";
+import { Jost } from "next/font/google";
 
 import {
   Background,
@@ -13,8 +14,15 @@ import {
   RevealFx,
   SpacingToken,
 } from "@once-ui-system/core";
-import { Footer, Header, RouteGuard, Providers } from "@/components";
+import { Footer, Header, RouteGuard, Providers, LitoChat } from "@/components";
 import { baseURL, effects, fonts, style, dataStyle, home } from "@/resources";
+
+const h2Font = Jost({
+  subsets: ["latin"],
+  weight: ["400"],
+  display: "swap",
+  variable: "--font-h2",
+});
 
 export async function generateMetadata() {
   return Meta.generate({
@@ -35,13 +43,14 @@ export default async function RootLayout({
     <Flex
       suppressHydrationWarning
       as="html"
-      lang="en"
+      lang="es"
       fillWidth
       className={classNames(
         fonts.heading.variable,
         fonts.body.variable,
         fonts.label.variable,
         fonts.code.variable,
+        h2Font.variable,
       )}
     >
       <head>
@@ -113,6 +122,25 @@ export default async function RootLayout({
           padding="0"
           horizontal="center"
         >
+          <div
+            className="topVoteMarquee"
+            aria-label="Vota Lista Azul y Blanca - Cacho Garcia Conduccion - Recuperemos el gremio de los trabajadores."
+          >
+            <div className="topVoteMarqueeTrack">
+              <span>
+                <strong>VOTA LISTA AZUL Y BLANCA</strong>
+                <span> - CACHO GARCIA CONDUCCION - RECUPEREMOS EL GREMIO DE LOS TRABAJADORES.</span>
+              </span>
+              <span>
+                <strong>VOTA LISTA AZUL Y BLANCA</strong>
+                <span> - CACHO GARCIA CONDUCCION - RECUPEREMOS EL GREMIO DE LOS TRABAJADORES.</span>
+              </span>
+              <span>
+                <strong>VOTA LISTA AZUL Y BLANCA</strong>
+                <span> - CACHO GARCIA CONDUCCION - RECUPEREMOS EL GREMIO DE LOS TRABAJADORES.</span>
+              </span>
+            </div>
+          </div>
           <RevealFx fill position="absolute">
             <Background
               mask={{
@@ -155,14 +183,14 @@ export default async function RootLayout({
               }}
             />
           </RevealFx>
-          <Flex fillWidth minHeight="16" s={{ hide: true }} />
           <Header />
-          <Flex zIndex={0} fillWidth padding="l" horizontal="center" flex={1}>
-            <Flex horizontal="center" fillWidth minHeight="0">
+          <Flex zIndex={0} fillWidth padding="0" horizontal="center" flex={1}>
+            <Flex fillWidth minHeight="0">
               <RouteGuard>{children}</RouteGuard>
             </Flex>
           </Flex>
           <Footer />
+          <LitoChat />
         </Column>
       </Providers>
     </Flex>

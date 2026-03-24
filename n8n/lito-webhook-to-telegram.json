@@ -1,0 +1,107 @@
+{
+  "name": "Lito - Webhook a Telegram",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "lito-inbox",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook-lito-inbox",
+      "name": "Webhook Lito Inbox",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        240,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const payload = $json.body ?? $json;\nconst headers = $json.headers ?? {};\n\nconst expectedSecret = $env.N8N_LITO_WEBHOOK_SECRET || '';\nconst receivedSecret = headers['x-lito-secret'] || headers['X-Lito-Secret'] || '';\n\nif (expectedSecret && receivedSecret !== expectedSecret) {\n  throw new Error('Unauthorized webhook request');\n}\n\nconst message = (payload.message || '').trim();\nif (!message) {\n  throw new Error('Missing message');\n}\n\nconst sessionId = payload.sessionId || `lito-${Date.now()}`;\nconst pagePath = payload.pagePath || '/';\nconst origin = payload.origin || 'web-lito';\nconst receivedAt = payload.receivedAt || new Date().toISOString();\nconst userAgent = payload.metadata?.userAgent || 'n/d';\nconst referer = payload.metadata?.referer || 'n/d';\nconst forwardedFor = payload.metadata?.forwardedFor || 'n/d';\n\nconst telegramText = [\n  'Nuevo mensaje desde la web',\n  '',\n  `Sesion: ${sessionId}`,\n  `Origen: ${origin}`,\n  `Pagina: ${pagePath}`,\n  `Fecha: ${receivedAt}`,\n  `IP: ${forwardedFor}`,\n  `Referer: ${referer}`,\n  `User-Agent: ${userAgent}`,\n  '',\n  'Mensaje:',\n  message,\n  '',\n  'Para responder en vivo, usa este sessionId en el flujo de respuesta.'\n].join('\\n');\n\nreturn [{\n  json: {\n    ok: true,\n    sessionId,\n    telegramChatId: $env.TELEGRAM_CHAT_ID,\n    telegramText\n  }\n}];"
+      },
+      "id": "code-validate-format",
+      "name": "Validar y Formatear",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        520,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.telegram.org/bot{{$env.TELEGRAM_BOT_TOKEN}}/sendMessage",
+        "sendBody": true,
+        "contentType": "json",
+        "jsonBody": "={{ { chat_id: $json.telegramChatId, text: $json.telegramText, disable_web_page_preview: true } }}",
+        "options": {}
+      },
+      "id": "http-telegram-send",
+      "name": "Enviar a Telegram",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        800,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { ok: true, sessionId: $json.sessionId, message: 'Lito ya le llevo tu mensaje al equipo.' } }}"
+      },
+      "id": "respond-webhook",
+      "name": "Responder Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        1080,
+        300
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook Lito Inbox": {
+      "main": [
+        [
+          {
+            "node": "Validar y Formatear",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validar y Formatear": {
+      "main": [
+        [
+          {
+            "node": "Enviar a Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar a Telegram": {
+      "main": [
+        [
+          {
+            "node": "Responder Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "lito-webhook-to-telegram-v1"
+}

@@ -7,4 +7,7 @@ export { RouteGuard } from "@/components/RouteGuard";
 export { Providers } from "@/components/Providers";
 export { ScrollToHash } from "@/components/ScrollToHash";
 export { ThemeToggle } from "@/components/ThemeToggle";
+export { LitoChat } from "@/components/LitoChat";
+export { JoinModalButton } from "@/components/JoinModalButton";
+export { CountdownBlock } from "@/components/CountdownBlock";
 export { CustomMDX } from "@/components/mdx";
