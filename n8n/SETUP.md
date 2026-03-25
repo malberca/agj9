@@ -101,16 +101,17 @@ Este workflow:
 - en `Validar y Preparar Sumate`, reemplazar `REEMPLAZAR_CON_SECRETO_SIGNUP`
 - en `Validar y Preparar Sumate`, reemplazar `REEMPLAZAR_CON_GOOGLE_SHEET_ID`
 - en `Guardar en Google Sheets`, reemplazar `REEMPLAZAR_CON_GOOGLE_SHEET_ID`
-- en `Avisar al Equipo`, cambiar `fromEmail` y `toEmail` si hace falta
-- en `Agradecer al Suscriptor`, cambiar `fromEmail` si hace falta
+- en `Avisar al Equipo`, reemplazar `REEMPLAZAR_CON_RESEND_API_KEY`
+- en `Avisar al Equipo`, reemplazar `REEMPLAZAR_CON_EMAIL_EQUIPO`
+- en `Agradecer al Suscriptor`, reemplazar `REEMPLAZAR_CON_RESEND_API_KEY`
+- si quieren otro remitente, cambiar `sumate@lanuevedejulio.com.ar` en ambos nodos
 
 #### Credenciales requeridas
 
 En la UI de n8n, asignar:
 
 - una credencial `Google Sheets OAuth2` al nodo `Guardar en Google Sheets`
-- una credencial `SMTP` al nodo `Avisar al Equipo`
-- una credencial `SMTP` al nodo `Agradecer al Suscriptor`
+- no hace falta SMTP si usan Resend por API
 
 ## 4. Columnas del Google Sheet
 

@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { ChangeEvent, FormEvent, useMemo, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useMemo, useState } from "react";
 
 import { Button, Column, Dialog, Heading, Input, Row, Text, Textarea } from "@once-ui-system/core";
 
@@ -42,6 +42,14 @@ export function JoinModalButton({
     () => !form.nombre.trim() || !form.email.trim() || !form.telefono.trim() || isSubmitting,
     [form.nombre, form.email, form.telefono, isSubmitting],
   );
+
+  useEffect(() => {
+    document.body.classList.toggle("join-modal-open", isOpen);
+
+    return () => {
+      document.body.classList.remove("join-modal-open");
+    };
+  }, [isOpen]);
 
   function updateField(
     field: keyof JoinFormState,
@@ -115,126 +123,148 @@ export function JoinModalButton({
       </Button>
 
       <Dialog
-        className="joinModal"
+        className={`joinModal${submitMessage ? " is-success" : ""}`}
         isOpen={isOpen}
         onClose={handleClose}
         title={
-          <Column horizontal="center" gap="8" className="joinModalTitleWrap">
-            <Image
-              src="/images/logo/logo_blue.png"
-              alt="Logo Agrupacion Nueve de Julio"
-              width={52}
-              height={52}
-              className="joinModalLogo"
-            />
-            <Heading as="h2" variant="heading-strong-m" className="joinModalTitle">
-              Sumate a la Lista Azul y Blanca
-            </Heading>
-          </Column>
+          submitMessage ? undefined : (
+            <Column horizontal="center" gap="8" className="joinModalTitleWrap">
+              <Image
+                src="/images/logo/logo_blue.png"
+                alt="Logo Agrupacion Nueve de Julio"
+                width={52}
+                height={52}
+                className="joinModalLogo"
+              />
+              <Heading as="h2" variant="heading-strong-m" className="joinModalTitle">
+                Sumate a la Lista Azul y Blanca
+              </Heading>
+            </Column>
+          )
         }
         description={
-          <Text variant="body-default-s" className="joinModalDescription">
-            Dejanos tus datos y el equipo se pone en contacto.
-          </Text>
+          submitMessage ? undefined : (
+            <Text variant="body-default-s" className="joinModalDescription">
+              Dejanos tus datos y el equipo se pone en contacto.
+            </Text>
+          )
         }
         footer={
-          <Row
-            fillWidth
-            horizontal="between"
-            vertical="center"
-            s={{ direction: "column" }}
-            className="joinModalFooter"
-          >
-            <Button variant="tertiary" size="s" onClick={handleClose} disabled={isSubmitting}>
-              Cerrar
-            </Button>
-            <Button
-              form="join-modal-form"
-              type="submit"
-              disabled={isDisabled}
-              size="s"
-              className="joinModalSubmit"
+          submitMessage ? (
+            <Row fillWidth horizontal="center" className="joinModalFooter joinModalFooterSuccess">
+              <Button
+                variant="secondary"
+                size="s"
+                onClick={handleClose}
+                disabled={isSubmitting}
+                className="joinModalSuccessClose"
+              >
+                Cerrar
+              </Button>
+            </Row>
+          ) : (
+            <Row
+              fillWidth
+              horizontal="between"
+              vertical="center"
+              s={{ direction: "column" }}
+              className="joinModalFooter"
             >
-              {isSubmitting ? "Enviando..." : "Enviar datos"}
-            </Button>
-          </Row>
+              <Button variant="tertiary" size="s" onClick={handleClose} disabled={isSubmitting}>
+                Cerrar
+              </Button>
+              <Button
+                form="join-modal-form"
+                type="submit"
+                disabled={isDisabled}
+                size="s"
+                className="joinModalSubmit"
+              >
+                {isSubmitting ? "Enviando..." : "Enviar datos"}
+              </Button>
+            </Row>
+          )
         }
       >
-        <form id="join-modal-form" onSubmit={handleSubmit} className="joinModalForm">
-          <Column fillWidth gap="12">
-            <Input
-              id="join-nombre"
-              className="joinModalField"
-              aria-label="Nombre y apellido"
-              height="s"
-              value={form.nombre}
-              onChange={(event) => updateField("nombre", event)}
-              placeholder="Nombre y apellido"
-              required
-            />
-            <Input
-              id="join-email"
-              className="joinModalField"
-              aria-label="Email"
-              height="s"
-              type="email"
-              value={form.email}
-              onChange={(event) => updateField("email", event)}
-              placeholder="Email"
-              required
-            />
-            <Input
-              id="join-telefono"
-              className="joinModalField"
-              aria-label="Telefono"
-              height="s"
-              value={form.telefono}
-              onChange={(event) => updateField("telefono", event)}
-              placeholder="Telefono"
-              required
-            />
-            <Input
-              id="join-estacion"
-              className="joinModalField"
-              aria-label="Estacion de Servicio (direccion)"
-              height="s"
-              value={form.estacionServicio}
-              onChange={(event) => updateField("estacionServicio", event)}
-              placeholder="Estacion de Servicio (direccion)"
-            />
-            <Input
-              id="join-funcion"
-              className="joinModalField"
-              aria-label="Funcion"
-              height="s"
-              value={form.funcion}
-              onChange={(event) => updateField("funcion", event)}
-              placeholder="Funcion"
-            />
-            <Textarea
-              id="join-mensaje"
-              className="joinModalField joinModalTextarea"
-              aria-label="Si queres contarnos algo mas este es tu espacio"
-              value={form.mensaje}
-              onChange={(event) => updateField("mensaje", event)}
-              placeholder="Si queres contarnos algo mas este es tu espacio"
-              lines={3}
-              resize="vertical"
-            />
+        {submitMessage ? (
+          <div className="joinModalSuccess">
+            <div className="joinModalSuccessInner">
+              <div className="joinModalSuccessEyebrow">Lista Azul y Blanca</div>
+              <div className="joinModalSuccessTitle">Gracias</div>
+              <div className="joinModalSuccessText">{submitMessage}</div>
+            </div>
+          </div>
+        ) : (
+          <form id="join-modal-form" onSubmit={handleSubmit} className="joinModalForm">
+            <Column fillWidth gap="12">
+              <Input
+                id="join-nombre"
+                className="joinModalField"
+                aria-label="Nombre y apellido"
+                height="s"
+                value={form.nombre}
+                onChange={(event) => updateField("nombre", event)}
+                placeholder="Nombre y apellido"
+                required
+              />
+              <Input
+                id="join-email"
+                className="joinModalField"
+                aria-label="Email"
+                height="s"
+                type="email"
+                value={form.email}
+                onChange={(event) => updateField("email", event)}
+                placeholder="Email"
+                required
+              />
+              <Input
+                id="join-telefono"
+                className="joinModalField"
+                aria-label="Telefono"
+                height="s"
+                value={form.telefono}
+                onChange={(event) => updateField("telefono", event)}
+                placeholder="Telefono"
+                required
+              />
+              <Input
+                id="join-estacion"
+                className="joinModalField"
+                aria-label="Estacion de Servicio (direccion)"
+                height="s"
+                value={form.estacionServicio}
+                onChange={(event) => updateField("estacionServicio", event)}
+                placeholder="Estacion de Servicio (direccion)"
+              />
+              <Input
+                id="join-funcion"
+                className="joinModalField"
+                aria-label="Funcion"
+                height="s"
+                value={form.funcion}
+                onChange={(event) => updateField("funcion", event)}
+                placeholder="Funcion"
+              />
+              <Textarea
+                id="join-mensaje"
+                className="joinModalField joinModalTextarea"
+                aria-label="Si queres contarnos algo mas este es tu espacio"
+                value={form.mensaje}
+                onChange={(event) => updateField("mensaje", event)}
+                placeholder="Si queres contarnos algo mas este es tu espacio"
+                lines={3}
+                resize="vertical"
+              />
 
-            {errorMessage && (
-              <Text onBackground="danger-medium" variant="body-default-s">
-                {errorMessage}
-              </Text>
-            )}
-
-            {submitMessage && (
-              <Text onBackground="success-medium" variant="body-default-s">
-                {submitMessage}
-              </Text>
-            )}
-          </Column>
-        </form>
+              {errorMessage && (
+                <Text onBackground="danger-medium" variant="body-default-s">
+                  {errorMessage}
+                </Text>
+              )}
+            </Column>
+          </form>
+        )}
       </Dialog>
     </>
   );

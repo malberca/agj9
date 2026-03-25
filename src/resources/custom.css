@@ -17,9 +17,27 @@ h2 {
 html,
 body {
   min-height: 100%;
+  scrollbar-gutter: stable;
   background:
     radial-gradient(circle at top center, rgba(13, 70, 117, 0.1) 0%, rgba(13, 70, 117, 0) 34%),
     linear-gradient(180deg, #f7fbff 0%, #edf4fb 56%, #f6f9fd 100%) !important;
+}
+
+.siteShell {
+  width: 100%;
+  transition:
+    filter 280ms ease,
+    transform 280ms ease,
+    opacity 280ms ease;
+  will-change: filter, transform;
+}
+
+body.join-modal-open .siteShell {
+  filter: blur(18px) saturate(0.92);
+  transform: scale(1.01);
+  opacity: 0.94;
+  pointer-events: none;
+  user-select: none;
 }
 
 [role="dialog"] {
@@ -483,6 +501,14 @@ button,
   box-shadow: 0 24px 48px rgba(22, 44, 72, 0.14) !important;
 }
 
+.joinModal.is-success {
+  background:
+    radial-gradient(circle at top right, rgba(128, 197, 237, 0.26) 0%, rgba(128, 197, 237, 0) 28%),
+    linear-gradient(160deg, #0d4675 0%, #1362a1 58%, #69bfe6 100%) !important;
+  border-color: rgba(128, 197, 237, 0.28) !important;
+  box-shadow: 0 30px 68px rgba(7, 26, 48, 0.32) !important;
+}
+
 .joinModal header,
 .joinModal section,
 .joinModal footer {
@@ -502,6 +528,18 @@ button,
 .joinModal footer {
   padding-top: 10px !important;
   padding-bottom: 10px !important;
+}
+
+.joinModal.is-success header,
+.joinModal.is-success section,
+.joinModal.is-success footer {
+  padding-left: 24px !important;
+  padding-right: 24px !important;
+}
+
+.joinModal.is-success section {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
 }
 
 .joinModalTitleWrap {
@@ -564,6 +602,57 @@ button,
   background: #69bfe6 !important;
   color: #ffffff !important;
   border-color: #69bfe6 !important;
+}
+
+.joinModalSuccess {
+  display: flex;
+  min-height: 20rem;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.joinModalSuccessInner {
+  width: 100%;
+  max-width: 20rem;
+  padding: 1.2rem 0 0.4rem;
+}
+
+.joinModalSuccessEyebrow {
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.joinModalSuccessTitle {
+  margin-top: 0.5rem;
+  color: #ffffff;
+  font-family: var(--font-h2), var(--font-heading), sans-serif;
+  font-size: clamp(3.5rem, 10vw, 5.2rem);
+  line-height: 0.92;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.joinModalSuccessText {
+  margin-top: 1rem;
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
+.joinModalFooterSuccess {
+  padding-top: 0 !important;
+  padding-bottom: 1.5rem !important;
+}
+
+.joinModalSuccessClose {
+  background: rgba(255, 255, 255, 0.14) !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.26) !important;
+  backdrop-filter: blur(8px);
 }
 
 .newsHero + div {
