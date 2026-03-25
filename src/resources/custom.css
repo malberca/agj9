@@ -1218,6 +1218,46 @@ button,
     margin-top: 2.5rem !important;
     margin-bottom: 2rem !important;
   }
+
+  .joinModalSuccess {
+    min-height: 18.5rem;
+  }
+
+  .joinModalSuccessInner {
+    min-height: 18.5rem;
+    padding-top: 1rem;
+  }
+
+  .joinModalSuccessEyebrow {
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+  }
+
+  .joinModalSuccessSubeyebrow {
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+  }
+
+  .joinModalSuccessTitle {
+    font-size: clamp(3.1rem, 17vw, 4.8rem);
+  }
+
+  .joinModalSuccessImage {
+    width: min(14.5rem, 78vw);
+  }
+
+  .joinModalSuccessText {
+    margin-top: 12.5rem;
+    padding: 0 1rem;
+    font-size: 0.92rem;
+    line-height: 1.5;
+  }
+
+  .joinModalFooterSuccess {
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+    padding-bottom: 1rem !important;
+  }
 }
 
 @keyframes litoFloat {
