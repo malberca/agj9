@@ -177,6 +177,10 @@ body {
   height: 100%;
 }
 
+.newsHeroVideoMobile {
+  display: none;
+}
+
 .newsHeroOverlay {
   position: absolute;
   inset: 0;
@@ -845,6 +849,14 @@ button,
 }
 
 @media (max-width: 640px) {
+  .newsHeroVideoDesktop {
+    display: none;
+  }
+
+  .newsHeroVideoMobile {
+    display: block;
+  }
+
   .countdownSection {
     padding: 1.9rem 0.9rem 2.2rem;
   }

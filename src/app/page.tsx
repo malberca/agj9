@@ -93,7 +93,7 @@ export default function Home() {
           sizes="100vw"
         />
         <video
-          className="newsHeroVideo"
+          className="newsHeroVideo newsHeroVideoDesktop"
           autoPlay
           muted
           loop
@@ -102,6 +102,17 @@ export default function Home() {
           poster={cover01Image.src}
         >
           <source src="/video/cacho.mp4" type="video/mp4" />
+        </video>
+        <video
+          className="newsHeroVideo newsHeroVideoMobile"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          poster={cover01Image.src}
+        >
+          <source src="/video/cacho-mobile.mp4" type="video/mp4" />
         </video>
         <div className="newsHeroOverlay" />
 
