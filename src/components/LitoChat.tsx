@@ -47,6 +47,7 @@ export function LitoChat() {
   const [sessionId, setSessionId] = useState("");
   const [messages, setMessages] = useState<ChatMessage[]>([createWelcomeMessage()]);
   const [isSending, setIsSending] = useState(false);
+  const [isAwaitingReply, setIsAwaitingReply] = useState(false);
   const [isReady, setIsReady] = useState(false);
   const messagesRef = useRef<HTMLDivElement | null>(null);
 
@@ -98,7 +99,7 @@ export function LitoChat() {
     }
 
     messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
-  }, [messages, isOpen]);
+  }, [messages, isAwaitingReply, isOpen]);
 
   useEffect(() => {
     if (!isReady || !sessionId) {
@@ -141,6 +142,8 @@ export function LitoChat() {
           if (nextReplies.length === 0) {
             return current;
           }
+
+          setIsAwaitingReply(false);
 
           return [...current, ...nextReplies];
         });
@@ -208,6 +211,7 @@ export function LitoChat() {
           text: result?.message || "Lito ya le llevo tu mensaje al equipo.",
         },
       ]);
+      setIsAwaitingReply(true);
     } catch (error) {
       const fallbackMessage =
         error instanceof Error
@@ -222,6 +226,7 @@ export function LitoChat() {
           text: fallbackMessage,
         },
       ]);
+      setIsAwaitingReply(false);
     } finally {
       setIsSending(false);
     }
@@ -282,6 +287,16 @@ export function LitoChat() {
                 {message.text}
               </div>
             ))}
+            {isAwaitingReply && (
+              <div className="litoChatMessage is-assistant is-typing" aria-live="polite">
+                <span>El equipo esta escribiendo</span>
+                <span className="litoChatTypingDots" aria-hidden="true">
+                  <span />
+                  <span />
+                  <span />
+                </span>
+              </div>
+            )}
           </div>
 
           <form className="litoChatComposer" onSubmit={handleSubmit}>

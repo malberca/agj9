@@ -6,7 +6,7 @@ Esta carpeta ya trae los workflows listos para importar:
 - `lito-telegram-to-web-reply.json`
 - `lito-signup-to-sheets-and-email.json`
 
-## 1. Variables de entorno
+## 1. Configuracion sin Variables de n8n
 
 ### En la web (`.env.local`)
 
@@ -20,19 +20,12 @@ Copiar desde `.env.local.example` y completar:
 
 ### En n8n
 
-Copiar desde `n8n/.env.example` y completar:
+No hace falta usar la seccion `Variables`.
 
-- `N8N_LITO_WEBHOOK_SECRET`
-- `N8N_LITO_REPLY_WEBHOOK_SECRET`
-- `N8N_LITO_SIGNUP_WEBHOOK_SECRET`
-- `TELEGRAM_BOT_TOKEN`
-- `TELEGRAM_CHAT_ID`
-- `LITO_WEB_REPLY_URL`
-- `LITO_SIGNUP_SHEET_ID`
-- `LITO_SIGNUP_SHEET_NAME`
-- `LITO_SIGNUP_FROM_EMAIL`
-- `LITO_SIGNUP_NOTIFY_EMAIL`
-- `LITO_SIGNUP_CAMPAIGN_NAME`
+En este setup:
+
+- los secretos y URLs se editan directamente en los nodos
+- Telegram, Google Sheets y SMTP se conectan con `Credentials`
 
 ## 2. Workflow de chat Lito
 
@@ -47,7 +40,16 @@ Este workflow:
 - reenvia el mensaje a Telegram
 - incluye el `sessionId` del visitante
 
-No usa credencial de Telegram en n8n porque llama directo a la API de Telegram con `TELEGRAM_BOT_TOKEN`.
+#### Ajustes manuales en nodos
+
+- en `Validar y Formatear`, reemplazar `REEMPLAZAR_CON_SECRETO_LITO`
+- en `Enviar a Telegram`, dejar `chatId` en `-5193039068` o cambiarlo si despues mueven el grupo
+
+#### Credenciales requeridas
+
+En la UI de n8n, asignar una credencial `Telegram API` al nodo:
+
+- `Enviar a Telegram`
 
 ### B. Telegram -> web
 
@@ -59,6 +61,11 @@ Este workflow:
 - detecta el `sessionId` si Cacho responde sobre el mensaje original
 - tambien soporta el formato `/lito <sessionId> respuesta`
 - publica la respuesta en `POST /api/lito-chat/replies`
+
+#### Ajustes manuales en nodos
+
+- en `Mandar Respuesta a la Web`, reemplazar `https://tu-dominio.com/api/lito-chat/replies`
+- en `Mandar Respuesta a la Web`, reemplazar `REEMPLAZAR_CON_SECRETO_REPLY`
 
 #### Credenciales requeridas
 
@@ -89,6 +96,14 @@ Este workflow:
 - manda mail de agradecimiento al afiliado
 - manda mail interno al equipo
 
+#### Ajustes manuales en nodos
+
+- en `Validar y Preparar Sumate`, reemplazar `REEMPLAZAR_CON_SECRETO_SIGNUP`
+- en `Validar y Preparar Sumate`, reemplazar `REEMPLAZAR_CON_GOOGLE_SHEET_ID`
+- en `Guardar en Google Sheets`, reemplazar `REEMPLAZAR_CON_GOOGLE_SHEET_ID`
+- en `Avisar al Equipo`, cambiar `fromEmail` y `toEmail` si hace falta
+- en `Agradecer al Suscriptor`, cambiar `fromEmail` si hace falta
+
 #### Credenciales requeridas
 
 En la UI de n8n, asignar:
@@ -118,15 +133,14 @@ La fila 1 debe tener exactamente estas columnas:
 
 ## 5. Orden sugerido de activacion
 
-1. Crear y probar variables de entorno en n8n
-2. Importar `lito-webhook-to-telegram.json`
-3. Importar `lito-telegram-to-web-reply.json`
-4. Asignar credenciales Telegram al workflow de vuelta
-5. Importar `lito-signup-to-sheets-and-email.json`
-6. Crear la hoja y asignar credenciales Google Sheets + SMTP
-7. Activar los 3 workflows
-8. Copiar las URLs productivas de webhook a `.env.local`
-9. Reiniciar la web
+1. Importar `lito-webhook-to-telegram.json`
+2. Importar `lito-telegram-to-web-reply.json`
+3. Importar `lito-signup-to-sheets-and-email.json`
+4. Editar placeholders y secretos en los nodos
+5. Asignar credenciales Telegram, Google Sheets y SMTP
+6. Activar los 3 workflows
+7. Copiar las URLs productivas de webhook a `.env.local`
+8. Reiniciar la web
 
 ## 6. Pruebas recomendadas
 
@@ -155,3 +169,23 @@ Por defecto se usa:
 - `/tmp/lito-chat-store`
 
 Si la web corre en varias instancias o en serverless efimero, conviene mover eso a Redis, Supabase o una DB compartida.
+
+## 8. Supabase para replies compartidas
+
+Si la web corre en Vercel, la opcion recomendada es Supabase.
+
+### Variables de entorno en la web
+
+- `SUPABASE_URL`
+- `SUPABASE_SERVICE_ROLE_KEY`
+- `SUPABASE_LITO_REPLIES_TABLE` opcional
+
+### SQL de la tabla
+
+Ejecutar:
+
+- `supabase/lito_chat_replies.sql`
+
+Por default la app usa la tabla:
+
+- `lito_chat_replies`
