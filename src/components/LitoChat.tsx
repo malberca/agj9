@@ -8,6 +8,11 @@ type ChatMessage = {
   text: string;
 };
 
+type LitoReplyResponse = {
+  ok?: boolean;
+  replies?: ChatMessage[];
+};
+
 const teaserMessage = "Hola soy Lito!";
 const initialChatMessage =
   "Hola, soy Lito. Si queres enviarle un mensaje al equipo, escribilo aca.";
@@ -94,6 +99,67 @@ export function LitoChat() {
 
     messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
   }, [messages, isOpen]);
+
+  useEffect(() => {
+    if (!isReady || !sessionId) {
+      return;
+    }
+
+    let isCancelled = false;
+
+    async function syncReplies() {
+      try {
+        const response = await fetch(
+          `/api/lito-chat/replies?sessionId=${encodeURIComponent(sessionId)}`,
+          {
+            cache: "no-store",
+          },
+        );
+
+        if (!response.ok) {
+          return;
+        }
+
+        const result = (await response.json().catch(() => null)) as LitoReplyResponse | null;
+        const replies = Array.isArray(result?.replies) ? result.replies : [];
+
+        if (isCancelled || replies.length === 0) {
+          return;
+        }
+
+        setMessages((current) => {
+          const knownIds = new Set(current.map((message) => message.id));
+          const nextReplies = replies.filter(
+            (reply) =>
+              reply &&
+              reply.role === "assistant" &&
+              typeof reply.id === "string" &&
+              typeof reply.text === "string" &&
+              !knownIds.has(reply.id),
+          );
+
+          if (nextReplies.length === 0) {
+            return current;
+          }
+
+          return [...current, ...nextReplies];
+        });
+      } catch {
+        return;
+      }
+    }
+
+    void syncReplies();
+
+    const intervalId = window.setInterval(() => {
+      void syncReplies();
+    }, 4000);
+
+    return () => {
+      isCancelled = true;
+      window.clearInterval(intervalId);
+    };
+  }, [isReady, sessionId]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
