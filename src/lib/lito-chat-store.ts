@@ -11,6 +11,141 @@ export type LitoStoredReply = {
 
 const maxRepliesPerSession = 100;
 
+function getSupabaseUrl() {
+  return process.env.SUPABASE_URL?.trim() || "";
+}
+
+function getSupabaseServiceRoleKey() {
+  return process.env.SUPABASE_SERVICE_ROLE_KEY?.trim() || "";
+}
+
+function getSupabaseRepliesTable() {
+  return process.env.SUPABASE_LITO_REPLIES_TABLE?.trim() || "lito_chat_replies";
+}
+
+function isSupabaseConfigured() {
+  return Boolean(getSupabaseUrl() && getSupabaseServiceRoleKey());
+}
+
+function getSupabaseRepliesUrl() {
+  return `${getSupabaseUrl()}/rest/v1/${getSupabaseRepliesTable()}`;
+}
+
+function createSupabaseHeaders() {
+  const serviceRoleKey = getSupabaseServiceRoleKey();
+
+  return {
+    apikey: serviceRoleKey,
+    Authorization: `Bearer ${serviceRoleKey}`,
+    "Content-Type": "application/json",
+  };
+}
+
+async function readSupabaseReplies(sessionId: string) {
+  const query = new URLSearchParams({
+    session_id: `eq.${sessionId}`,
+    select: "id,text,created_at,source",
+    order: "created_at.asc",
+    limit: maxRepliesPerSession.toString(),
+  });
+
+  const response = await fetch(`${getSupabaseRepliesUrl()}?${query.toString()}`, {
+    headers: createSupabaseHeaders(),
+    cache: "no-store",
+  });
+
+  if (!response.ok) {
+    throw new Error(`Supabase replies fetch failed with status ${response.status}`);
+  }
+
+  const rows = (await response.json().catch(() => [])) as Array<{
+    id?: string;
+    text?: string;
+    created_at?: string;
+    source?: string;
+  }>;
+
+  if (!Array.isArray(rows)) {
+    return [];
+  }
+
+  return rows
+    .filter(
+      (row) =>
+        typeof row?.id === "string" &&
+        typeof row?.text === "string" &&
+        typeof row?.created_at === "string" &&
+        row?.source === "telegram",
+    )
+    .map((row) => ({
+      id: row.id as string,
+      role: "assistant" as const,
+      text: row.text as string,
+      createdAt: row.created_at as string,
+      source: "telegram" as const,
+    }));
+}
+
+async function appendSupabaseReply({
+  sessionId,
+  id,
+  text,
+}: {
+  sessionId: string;
+  id: string;
+  text: string;
+}) {
+  const response = await fetch(getSupabaseRepliesUrl(), {
+    method: "POST",
+    headers: {
+      ...createSupabaseHeaders(),
+      Prefer: "resolution=ignore-duplicates,return=representation",
+    },
+    body: JSON.stringify([
+      {
+        id,
+        session_id: sessionId,
+        text,
+        source: "telegram",
+      },
+    ]),
+    cache: "no-store",
+  });
+
+  if (response.ok) {
+    const rows = (await response.json().catch(() => [])) as Array<{
+      id?: string;
+      text?: string;
+      created_at?: string;
+      source?: string;
+    }>;
+
+    const insertedReply = rows[0];
+
+    if (insertedReply?.id && insertedReply?.text && insertedReply?.created_at) {
+      return {
+        id: insertedReply.id,
+        role: "assistant" as const,
+        text: insertedReply.text,
+        createdAt: insertedReply.created_at,
+        source: "telegram" as const,
+      };
+    }
+  }
+
+  if (response.status === 409) {
+    const replies = await readSupabaseReplies(sessionId);
+    return replies.find((reply) => reply.id === id) || null;
+  }
+
+  if (!response.ok) {
+    throw new Error(`Supabase reply insert failed with status ${response.status}`);
+  }
+
+  const replies = await readSupabaseReplies(sessionId);
+  return replies.find((reply) => reply.id === id) || null;
+}
+
 function getStoreDir() {
   return process.env.LITO_CHAT_STORE_DIR || path.join("/tmp", "lito-chat-store");
 }
@@ -51,6 +186,10 @@ async function writeSessionReplies(sessionId: string, replies: LitoStoredReply[]
 }
 
 export async function listLitoReplies(sessionId: string) {
+  if (isSupabaseConfigured()) {
+    return readSupabaseReplies(sessionId);
+  }
+
   return readSessionReplies(sessionId);
 }
 
@@ -63,6 +202,10 @@ export async function appendLitoReply({
   id: string;
   text: string;
 }) {
+  if (isSupabaseConfigured()) {
+    return appendSupabaseReply({ sessionId, id, text });
+  }
+
   const replies = await readSessionReplies(sessionId);
 
   if (replies.some((reply) => reply.id === id)) {
