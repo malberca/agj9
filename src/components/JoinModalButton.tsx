@@ -4,6 +4,12 @@ import Image from "next/image";
 import { ChangeEvent, FormEvent, useEffect, useMemo, useState } from "react";
 
 import { Button, Column, Dialog, Heading, Input, Row, Text, Textarea } from "@once-ui-system/core";
+import {
+  SignupField,
+  SignupFieldErrors,
+  getSignupFieldErrors,
+  signupFunctionOptions,
+} from "@/lib/signup-validation";
 
 type JoinFormState = {
   nombre: string;
@@ -38,6 +44,7 @@ export function JoinModalButton({
   const [submitMessage, setSubmitMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [form, setForm] = useState<JoinFormState>(initialState);
+  const [fieldErrors, setFieldErrors] = useState<SignupFieldErrors>({});
 
   const isDisabled = useMemo(
     () => !form.nombre.trim() || !form.email.trim() || !form.telefono.trim() || isSubmitting,
@@ -62,12 +69,22 @@ export function JoinModalButton({
 
   function updateField(
     field: keyof JoinFormState,
-    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
   ) {
     setForm((current) => ({
       ...current,
       [field]: event.target.value,
     }));
+    setFieldErrors((current) => {
+      if (!current[field as SignupField]) {
+        return current;
+      }
+
+      return {
+        ...current,
+        [field]: undefined,
+      };
+    });
   }
 
   function handleClose() {
@@ -78,6 +95,7 @@ export function JoinModalButton({
     setIsOpen(false);
     setErrorMessage("");
     setSubmitMessage("");
+    setFieldErrors({});
   }
 
   function handleOpen() {
@@ -93,6 +111,14 @@ export function JoinModalButton({
     event.preventDefault();
 
     if (isDisabled) {
+      return;
+    }
+
+    const validationErrors = getSignupFieldErrors(form);
+
+    if (Object.keys(validationErrors).length > 0) {
+      setFieldErrors(validationErrors);
+      setErrorMessage("Revisa los campos marcados y volve a intentar.");
       return;
     }
 
@@ -119,6 +145,7 @@ export function JoinModalButton({
 
       setSubmitMessage(result?.message || "Gracias. Ya enviamos tus datos al equipo.");
       setForm(initialState);
+      setFieldErrors({});
     } catch (error) {
       setErrorMessage(
         error instanceof Error ? error.message : "No pude enviar los datos en este momento.",
@@ -223,68 +250,109 @@ export function JoinModalButton({
         ) : (
           <form id="join-modal-form" onSubmit={handleSubmit} className="joinModalForm">
             <Column fillWidth gap="12">
-              <Input
-                id="join-nombre"
-                className="joinModalField"
-                aria-label="Nombre y apellido"
-                height="s"
-                value={form.nombre}
-                onChange={(event) => updateField("nombre", event)}
-                placeholder="Nombre y apellido"
-                required
-              />
-              <Input
-                id="join-email"
-                className="joinModalField"
-                aria-label="Email"
-                height="s"
-                type="email"
-                value={form.email}
-                onChange={(event) => updateField("email", event)}
-                placeholder="Email"
-                required
-              />
-              <Input
-                id="join-telefono"
-                className="joinModalField"
-                aria-label="Telefono"
-                height="s"
-                value={form.telefono}
-                onChange={(event) => updateField("telefono", event)}
-                placeholder="Telefono"
-                required
-              />
-              <Input
-                id="join-estacion"
-                className="joinModalField"
-                aria-label="Estacion de Servicio (direccion)"
-                height="s"
-                value={form.estacionServicio}
-                onChange={(event) => updateField("estacionServicio", event)}
-                placeholder="Estacion de Servicio (direccion)"
-              />
-              <Input
-                id="join-funcion"
-                className="joinModalField"
-                aria-label="Funcion"
-                height="s"
-                value={form.funcion}
-                onChange={(event) => updateField("funcion", event)}
-                placeholder="Funcion"
-              />
-              <Textarea
-                id="join-mensaje"
-                className="joinModalField joinModalTextarea"
-                aria-label="Si queres contarnos algo mas este es tu espacio"
-                value={form.mensaje}
-                onChange={(event) => updateField("mensaje", event)}
-                placeholder="Si queres contarnos algo mas este es tu espacio"
-                lines={3}
-                resize="vertical"
-              />
+              <div className="joinModalFieldGroup">
+                <Input
+                  id="join-nombre"
+                  className="joinModalField"
+                  aria-label="Nombre y apellido"
+                  aria-invalid={Boolean(fieldErrors.nombre)}
+                  height="s"
+                  value={form.nombre}
+                  onChange={(event) => updateField("nombre", event)}
+                  placeholder="Nombre y apellido"
+                  required
+                />
+                {fieldErrors.nombre && (
+                  <Text variant="body-default-xs" className="joinModalFieldError">
+                    {fieldErrors.nombre}
+                  </Text>
+                )}
+              </div>
+              <div className="joinModalFieldGroup">
+                <Input
+                  id="join-email"
+                  className="joinModalField"
+                  aria-label="Email"
+                  aria-invalid={Boolean(fieldErrors.email)}
+                  height="s"
+                  type="email"
+                  value={form.email}
+                  onChange={(event) => updateField("email", event)}
+                  placeholder="Email"
+                  required
+                />
+                {fieldErrors.email && (
+                  <Text variant="body-default-xs" className="joinModalFieldError">
+                    {fieldErrors.email}
+                  </Text>
+                )}
+              </div>
+              <div className="joinModalFieldGroup">
+                <Input
+                  id="join-telefono"
+                  className="joinModalField"
+                  aria-label="Telefono"
+                  aria-invalid={Boolean(fieldErrors.telefono)}
+                  height="s"
+                  value={form.telefono}
+                  onChange={(event) => updateField("telefono", event)}
+                  placeholder="Telefono"
+                  required
+                />
+                {fieldErrors.telefono && (
+                  <Text variant="body-default-xs" className="joinModalFieldError">
+                    {fieldErrors.telefono}
+                  </Text>
+                )}
+              </div>
+              <div className="joinModalFieldGroup">
+                <Input
+                  id="join-estacion"
+                  className="joinModalField"
+                  aria-label="Estacion de Servicio (direccion)"
+                  height="s"
+                  value={form.estacionServicio}
+                  onChange={(event) => updateField("estacionServicio", event)}
+                  placeholder="Estacion de Servicio (direccion)"
+                />
+              </div>
+              <div className="joinModalFieldGroup">
+                <select
+                  id="join-funcion"
+                  className={`joinModalField joinModalSelect${form.funcion ? "" : " is-empty"}`}
+                  aria-label="Funcion"
+                  aria-invalid={Boolean(fieldErrors.funcion)}
+                  value={form.funcion}
+                  onChange={(event) => updateField("funcion", event)}
+                >
+                  <option value="">Funcion</option>
+                  {signupFunctionOptions.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+                {fieldErrors.funcion && (
+                  <Text variant="body-default-xs" className="joinModalFieldError">
+                    {fieldErrors.funcion}
+                  </Text>
+                )}
+              </div>
+              <div className="joinModalFieldGroup">
+                <Textarea
+                  id="join-mensaje"
+                  className="joinModalField joinModalTextarea"
+                  aria-label="Si queres contarnos algo mas este es tu espacio"
+                  value={form.mensaje}
+                  onChange={(event) => updateField("mensaje", event)}
+                  placeholder="Si queres contarnos algo mas este es tu espacio"
+                  lines={3}
+                  resize="vertical"
+                />
+              </div>
 
               {errorMessage && (
-                <Text onBackground="danger-medium" variant="body-default-s">
+                <Text onBackground="danger-medium" variant="body-default-s" className="joinModalErrorMessage">
                   {errorMessage}
                 </Text>
               )}

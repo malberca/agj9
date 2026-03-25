@@ -1,0 +1,11 @@
+[
+  { "value": "encargado", "label": "Encargado / Jefe de turno" },
+  { "value": "administrativo", "label": "Administrativo" },
+  { "value": "op_servicio", "label": "Operario de Servicio" },
+  { "value": "op_playa", "label": "Playero (Operario de Playa)" },
+  { "value": "op_auxiliar", "label": "Operario Auxiliar" },
+  { "value": "op_conductor", "label": "Operario Conductor" },
+  { "value": "op_interior", "label": "Operario de Tienda / Anexos" },
+  { "value": "sereno", "label": "Sereno / Vigilancia" },
+  { "value": "franquero", "label": "Franquero (reemplazos)" }
+]

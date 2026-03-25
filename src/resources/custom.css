@@ -575,6 +575,7 @@ button,
 .joinModalForm,
 .joinModalForm label,
 .joinModalForm input,
+.joinModalForm select,
 .joinModalForm textarea,
 .joinModalFooter {
   color: #333333 !important;
@@ -582,6 +583,7 @@ button,
 }
 
 .joinModalForm input,
+.joinModalForm select,
 .joinModalForm textarea {
   background: #ffffff !important;
   border-color: rgba(168, 180, 194, 0.42) !important;
@@ -593,6 +595,49 @@ button,
 .joinModalForm textarea::placeholder {
   color: #7d776b !important;
   font-weight: 300 !important;
+}
+
+.joinModalFieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.joinModalSelect {
+  width: 100%;
+  min-height: 2.7rem;
+  border: 1px solid rgba(168, 180, 194, 0.42);
+  border-radius: 999px;
+  padding: 0.52rem 1rem;
+  font: inherit;
+  appearance: none;
+  background:
+    linear-gradient(45deg, transparent 50%, #5d6876 50%) calc(100% - 1.15rem) calc(50% - 0.12rem) / 0.42rem 0.42rem no-repeat,
+    linear-gradient(135deg, #5d6876 50%, transparent 50%) calc(100% - 0.88rem) calc(50% - 0.12rem) / 0.42rem 0.42rem no-repeat,
+    #ffffff;
+  color: #333333;
+  cursor: pointer;
+}
+
+.joinModalSelect.is-empty {
+  color: #7d776b;
+  font-weight: 300;
+}
+
+.joinModalForm [aria-invalid="true"] {
+  border-color: rgba(194, 59, 59, 0.75) !important;
+  box-shadow: 0 0 0 1px rgba(194, 59, 59, 0.18);
+}
+
+.joinModalFieldError {
+  color: #b14646 !important;
+  font-size: 0.72rem !important;
+  line-height: 1.35 !important;
+  padding-left: 0.95rem;
+}
+
+.joinModalErrorMessage {
+  margin-top: 0.1rem;
 }
 
 .joinModalTextarea textarea {
