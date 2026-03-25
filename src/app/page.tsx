@@ -101,6 +101,7 @@ export default function Home() {
           preload="auto"
           poster="/images/projects/project-01/poster-desktop.png"
         >
+          <source src="/video/cacho.webm" type="video/webm" />
           <source src="/video/cacho.mp4" type="video/mp4" />
         </video>
         <video
@@ -112,6 +113,7 @@ export default function Home() {
           preload="auto"
           poster="/images/projects/project-01/poster-mobile.png"
         >
+          <source src="/video/cacho-mobile.webm" type="video/webm" />
           <source src="/video/cacho-mobile.mp4" type="video/mp4" />
         </video>
         <div className="newsHeroOverlay" />
@@ -284,6 +286,7 @@ export default function Home() {
               </Card>
 
               <Card
+                className="portalCard"
                 fillWidth
                 radius="xl"
                 padding="24"
@@ -291,7 +294,7 @@ export default function Home() {
                 background="surface"
                 border="neutral-alpha-medium"
               >
-                <Text variant="label-default-s" onBackground="neutral-weak">
+                <Text variant="label-default-s" className="portalCardLabel">
                   Sobre el portal
                 </Text>
                 <Heading as="h3" variant="heading-strong-l" marginTop="8">
