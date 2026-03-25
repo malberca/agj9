@@ -1,8 +1,10 @@
 import Image from "next/image";
+import { Sassy_Frass } from "next/font/google";
 import cover01Image from "../../public/images/projects/project-01/cover-01.jpg";
 import cover02Image from "../../public/images/projects/project-01/cover-02.jpg";
 import cover03Image from "../../public/images/projects/project-01/cover-03.webp";
 import cover04Image from "../../public/images/projects/project-01/cover-04.webp";
+import editorialImage from "../../public/images/projects/project-01/image-03.jpg";
 
 import {
   Badge,
@@ -19,6 +21,12 @@ import {
 } from "@once-ui-system/core";
 import { CountdownBlock, JoinModalButton } from "@/components";
 import { about, baseURL, home, person } from "@/resources";
+
+const signatureFont = Sassy_Frass({
+  subsets: ["latin"],
+  weight: ["400"],
+  display: "swap",
+});
 
 const briefs = [
   {
@@ -54,6 +62,31 @@ const cards = [
       "La tecnologia no tiene que ser una amenaza. Tiene que ser una herramienta al servicio del trabajador. Trabajar codo a codo con las empresas en pos de mejoras continuas en la experiencia y el dia a dia de cada trabajador que representamos.",
     image: cover04Image.src,
   },
+];
+
+const modernizationColumns = [
+  [
+    "Venimos a construir un sindicato presente, activo y preparado para los desafios de hoy. No queremos un gremio que reaccione tarde, sino uno que se anticipe.",
+    "Impulsamos una modernizacion real, con herramientas actuales que mejoren la gestion y acerquen el sindicato al afiliado. Queremos transparencia en cada decision y acceso claro a la informacion.",
+    "Vamos a digitalizar procesos para agilizar tramites y respuestas. Menos burocracia, mas soluciones concretas.",
+    "Creemos en la capacitacion constante como eje central. El avance tecnologico no puede dejar a ningun trabajador afuera.",
+    "Vamos a promover programas de formacion en nuevas herramientas y oficios. Queremos trabajadores preparados para el presente y el futuro.",
+  ],
+  [
+    "Defendemos cada puesto de trabajo frente a los cambios del sector. Adaptar funciones tambien es proteger el empleo.",
+    "Vamos a recuperar un sindicato ordenado y con gestion responsable. Los recursos tienen que volver a estar al servicio del afiliado.",
+    "Impulsamos una representacion cercana, que escuche y actue. Un gremio que este donde tiene que estar: al lado del trabajador.",
+    "Vamos a fortalecer los canales de participacion. Tu voz tiene que ser parte de cada decision importante.",
+    "Queremos un sindicato que acompane en cada etapa laboral. Desde el ingreso hasta el crecimiento profesional.",
+  ],
+  [
+    "Vamos a trabajar por mejores condiciones laborales reales. Con presencia, negociacion y firmeza.",
+    "Recuperar derechos perdidos es una prioridad. Pero tambien generar nuevas oportunidades.",
+    "Creemos en un gremio que evoluciona sin perder su esencia. Defender al trabajador, con herramientas del presente.",
+    "Todo lo que proponemos no puede quedar solo en palabras. Nuestro compromiso es llevar estas transformaciones al Convenio Colectivo de Trabajo, impulsando su actualizacion y modernizacion para que refleje la realidad actual del sector y proteja el futuro de los trabajadores.",
+    "No venimos a prometer. Venimos a hacer.",
+    "Y a construir, entre todos, un sindicato que vuelva a representar de verdad.",
+  ],
 ];
 
 export async function generateMetadata() {
@@ -319,7 +352,54 @@ export default function Home() {
             </Column>
           </Row>
 
-          <Column fillWidth gap="16" id="propuesta">
+          <section className="editorialManifestoSection" id="propuesta">
+            <div className="editorialManifestoShell">
+              <div className="editorialManifestoIntro">
+                <Text variant="label-default-s" className="editorialManifestoKicker">
+                  Modernizar para representar
+                </Text>
+                <Heading as="h2" variant="display-strong-s" className="editorialManifestoTitle">
+                  Un sindicato preparado para el futuro
+                </Heading>
+              </div>
+
+              <div className="editorialManifestoLayout">
+                <div className="editorialManifestoImageWrap">
+                  <Image
+                    src={editorialImage}
+                    alt="Cacho Garcia en actividad sindical"
+                    fill
+                    className="editorialManifestoImage"
+                    sizes="(max-width: 768px) 100vw, 280px"
+                  />
+                </div>
+
+                <div className="editorialManifestoColumns">
+                  {modernizationColumns.map((column, index) => (
+                    <div key={`editorial-column-${index}`} className="editorialManifestoColumn">
+                      {column.map((paragraph) => (
+                        <Text
+                          key={paragraph}
+                          variant="body-default-s"
+                          className="editorialManifestoParagraph"
+                        >
+                          {paragraph}
+                        </Text>
+                      ))}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="editorialManifestoSignature">
+                <span className={`${signatureFont.className} editorialManifestoSignatureText`}>
+                  Cacho Garcia
+                </span>
+              </div>
+            </div>
+          </section>
+
+          <Column fillWidth gap="16" id="ejes-propuesta">
             <Column fillWidth gap="12" horizontal="center" className="proposalMarqueeContainer">
               <Heading as="h2" variant="heading-strong-xl">
                 Ejes de la propuesta
