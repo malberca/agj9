@@ -27,14 +27,11 @@ body {
   width: 100%;
   transition:
     filter 280ms ease,
-    transform 280ms ease,
     opacity 280ms ease;
-  will-change: filter, transform;
 }
 
 body.join-modal-open .siteShell {
   filter: blur(18px) saturate(0.92);
-  transform: scale(1.01);
   opacity: 0.94;
   pointer-events: none;
   user-select: none;
