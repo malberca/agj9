@@ -541,6 +541,10 @@ button,
   filter: saturate(0.92) contrast(1.02);
 }
 
+.editorialManifestoImageMobile {
+  display: none;
+}
+
 .editorialManifestoColumns {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1359,6 +1363,15 @@ button,
   .editorialManifestoImageWrap {
     min-height: 17rem;
     margin: 1rem 1rem 0;
+  }
+
+  .editorialManifestoImageDesktop {
+    display: none;
+  }
+
+  .editorialManifestoImageMobile {
+    display: block;
+    object-position: center top;
   }
 
   .editorialManifestoColumns {

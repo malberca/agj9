@@ -5,6 +5,7 @@ import cover02Image from "../../public/images/projects/project-01/cover-02.jpg";
 import cover03Image from "../../public/images/projects/project-01/cover-03.webp";
 import cover04Image from "../../public/images/projects/project-01/cover-04.webp";
 import editorialImage from "../../public/images/projects/project-01/image-03.jpg";
+import editorialMobileImage from "../../public/images/projects/project-01/image-03-mobile.jpg";
 
 import {
   Badge,
@@ -369,7 +370,14 @@ export default function Home() {
                     src={editorialImage}
                     alt="Cacho Garcia en actividad sindical"
                     fill
-                    className="editorialManifestoImage"
+                    className="editorialManifestoImage editorialManifestoImageDesktop"
+                    sizes="(max-width: 768px) 100vw, 280px"
+                  />
+                  <Image
+                    src={editorialMobileImage}
+                    alt="Cacho Garcia en actividad sindical"
+                    fill
+                    className="editorialManifestoImage editorialManifestoImageMobile"
                     sizes="(max-width: 768px) 100vw, 280px"
                   />
                 </div>
