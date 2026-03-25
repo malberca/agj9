@@ -99,7 +99,7 @@ export default function Home() {
           loop
           playsInline
           preload="auto"
-          poster={cover01Image.src}
+          poster="/images/projects/project-01/poster.png"
         >
           <source src="/video/cacho.mp4" type="video/mp4" />
         </video>
@@ -110,7 +110,7 @@ export default function Home() {
           loop
           playsInline
           preload="auto"
-          poster={cover01Image.src}
+          poster="/images/projects/project-01/poster.png"
         >
           <source src="/video/cacho-mobile.mp4" type="video/mp4" />
         </video>
