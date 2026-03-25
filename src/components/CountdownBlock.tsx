@@ -1,8 +1,27 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Montserrat } from "next/font/google";
 
 import { Column, Heading, Row, Text } from "@once-ui-system/core";
+
+const countdownThinFont = Montserrat({
+  subsets: ["latin"],
+  weight: ["100"],
+  display: "swap",
+});
+
+const countdownRegularFont = Montserrat({
+  subsets: ["latin"],
+  weight: ["400"],
+  display: "swap",
+});
+
+const countdownBoldFont = Montserrat({
+  subsets: ["latin"],
+  weight: ["700"],
+  display: "swap",
+});
 
 type CountdownBlockProps = {
   targetIso: string;
@@ -67,17 +86,22 @@ export function CountdownBlock({ targetIso }: CountdownBlockProps) {
   }, [targetIso]);
 
   return (
-    <section className="countdownSection" aria-label="Dias para el cambio">
+    <section
+      className={`countdownSection ${countdownThinFont.className}`}
+      aria-label="Dias para el cambio"
+    >
       <Column fillWidth horizontal="center" className="countdownInner">
-        <Text className="countdownEyebrow">Cuenta regresiva</Text>
+        <Text className={`countdownEyebrow ${countdownRegularFont.className}`}>Cuenta regresiva</Text>
         <Heading
           as="h2"
           variant="display-strong-m"
-          className="countdownTitle"
+          className={`countdownTitle ${countdownBoldFont.className}`}
         >
           Dias para el cambio
         </Heading>
-        <Text className="countdownDateHint">Fecha tentativa: 15 de octubre de 2026</Text>
+        <Text className={`countdownDateHint ${countdownRegularFont.className}`}>
+          Fecha tentativa: 15 de octubre de 2026
+        </Text>
 
         <Row
           fillWidth

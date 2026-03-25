@@ -6,6 +6,7 @@ type ChatMessage = {
   id: string;
   role: "assistant" | "user";
   text: string;
+  variant?: "default" | "status" | "telegram";
 };
 
 type LitoReplyResponse = {
@@ -38,6 +39,37 @@ function createWelcomeMessage(): ChatMessage {
     id: "lito-welcome",
     role: "assistant",
     text: initialChatMessage,
+    variant: "default",
+  };
+}
+
+function normalizeMessage(message: ChatMessage): ChatMessage {
+  if (message.role === "user") {
+    return message;
+  }
+
+  if (legacyChatMessages.includes(message.text) || message.text === initialChatMessage) {
+    return {
+      ...message,
+      text: initialChatMessage,
+      variant: "default",
+    };
+  }
+
+  if (message.text === "Lito ya entrego tu mensaje.") {
+    return {
+      ...message,
+      variant: "status",
+    };
+  }
+
+  if (message.variant) {
+    return message;
+  }
+
+  return {
+    ...message,
+    variant: "telegram",
   };
 }
 
@@ -68,11 +100,7 @@ export function LitoChat() {
     if (storedMessages) {
       try {
         const parsed = JSON.parse(storedMessages) as ChatMessage[];
-        const normalizedMessages = parsed.map((message) =>
-          message.role === "assistant" && legacyChatMessages.includes(message.text)
-            ? { ...message, text: initialChatMessage }
-            : message,
-        );
+        const normalizedMessages = parsed.map(normalizeMessage);
 
         if (normalizedMessages.length > 0) {
           setMessages(normalizedMessages);
@@ -145,7 +173,13 @@ export function LitoChat() {
 
           setIsAwaitingReply(false);
 
-          return [...current, ...nextReplies];
+          return [
+            ...current,
+            ...nextReplies.map((reply) => ({
+              ...reply,
+              variant: "telegram" as const,
+            })),
+          ];
         });
       } catch {
         return;
@@ -208,7 +242,8 @@ export function LitoChat() {
         {
           id: createId(),
           role: "assistant",
-          text: result?.message || "Lito ya le llevo tu mensaje al equipo.",
+          text: result?.message || "Lito ya entrego tu mensaje.",
+          variant: "status",
         },
       ]);
       setIsAwaitingReply(true);
@@ -277,24 +312,52 @@ export function LitoChat() {
           </header>
 
           <div className="litoChatMessages" ref={messagesRef}>
-            {messages.map((message) => (
-              <div
-                key={message.id}
-                className={`litoChatMessage ${
-                  message.role === "assistant" ? "is-assistant" : "is-user"
-                }`}
-              >
-                {message.text}
-              </div>
-            ))}
+            {messages.map((message) => {
+              const messageClassName = [
+                "litoChatMessage",
+                message.role === "assistant" ? "is-assistant" : "is-user",
+                message.variant === "status" ? "is-status" : "",
+                message.variant === "telegram" ? "is-telegram" : "",
+              ]
+                .filter(Boolean)
+                .join(" ");
+
+              const rowClassName = [
+                "litoChatMessageRow",
+                message.role === "assistant" ? "is-assistant" : "is-user",
+                message.variant === "status" ? "is-status" : "",
+                message.variant === "telegram" ? "is-telegram" : "",
+              ]
+                .filter(Boolean)
+                .join(" ");
+
+              return (
+                <div key={message.id} className={rowClassName}>
+                  {message.variant === "telegram" && (
+                    <span className="litoChatReplyAvatar" aria-hidden="true">
+                      <img
+                        src={litoImageSrc}
+                        alt=""
+                        width={28}
+                        height={28}
+                        className="litoChatReplyAvatarImage"
+                      />
+                    </span>
+                  )}
+                  <div className={messageClassName}>{message.text}</div>
+                </div>
+              );
+            })}
             {isAwaitingReply && (
-              <div className="litoChatMessage is-assistant is-typing" aria-live="polite">
-                <span>El equipo esta escribiendo</span>
-                <span className="litoChatTypingDots" aria-hidden="true">
-                  <span />
-                  <span />
-                  <span />
-                </span>
+              <div className="litoChatMessageRow is-assistant is-status" aria-live="polite">
+                <div className="litoChatMessage is-assistant is-status is-typing">
+                  <span>El equipo esta escribiendo</span>
+                  <span className="litoChatTypingDots" aria-hidden="true">
+                    <span />
+                    <span />
+                    <span />
+                  </span>
+                </div>
               </div>
             )}
           </div>

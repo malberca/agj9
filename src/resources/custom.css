@@ -151,27 +151,29 @@ body.join-modal-open .siteShell {
 }
 
 .countdownValue {
-  font-family: var(--font-h2), var(--font-heading), sans-serif;
+  font-family: inherit;
   color: #0d4675;
   font-size: clamp(2.2rem, 7vw, 5.2rem);
-  font-weight: 700;
+  font-weight: 100;
   line-height: 0.92;
   letter-spacing: 0.03em;
 }
 
 .countdownLabel {
   margin-top: 0.55rem;
+  font-family: inherit;
   color: #333333;
   font-size: 0.82rem;
-  font-weight: 500;
+  font-weight: 100;
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
 
 .countdownDivider {
+  font-family: inherit;
   color: rgba(13, 70, 117, 0.42);
   font-size: clamp(3rem, 7vw, 5.4rem);
-  font-weight: 300;
+  font-weight: 100;
   line-height: 1;
 }
 
@@ -818,7 +820,7 @@ button,
 .litoChatEyebrow {
   display: inline-block;
   margin-bottom: 0.35rem;
-  color: #0d4675;
+  color: #00ed64;
   font-size: 0.73rem;
   font-weight: 700;
   letter-spacing: 0.14em;
@@ -859,6 +861,20 @@ button,
   padding: 0.4rem 1rem 1rem;
 }
 
+.litoChatMessageRow {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.55rem;
+}
+
+.litoChatMessageRow.is-user {
+  justify-content: flex-end;
+}
+
+.litoChatMessageRow.is-status {
+  justify-content: flex-start;
+}
+
 .litoChatMessage {
   max-width: 87%;
   padding: 0.8rem 0.95rem;
@@ -875,16 +891,51 @@ button,
   box-shadow: 0 10px 24px rgba(13, 38, 66, 0.08);
 }
 
+.litoChatMessage.is-telegram {
+  background: #00ed64;
+  color: #ffffff;
+  box-shadow: 0 12px 24px rgba(0, 237, 100, 0.18);
+}
+
 .litoChatMessage.is-user {
   align-self: flex-end;
   background: #0d4675;
   color: #ffffff;
 }
 
+.litoChatMessage.is-status {
+  max-width: 100%;
+  padding: 0;
+  background: transparent;
+  color: rgba(25, 37, 56, 0.58);
+  box-shadow: none;
+  font-size: 0.79rem;
+  line-height: 1.35;
+}
+
 .litoChatMessage.is-typing {
   display: inline-flex;
   align-items: center;
   gap: 0.55rem;
+}
+
+.litoChatReplyAvatar {
+  display: inline-flex;
+  width: 1.75rem;
+  height: 1.75rem;
+  flex: 0 0 1.75rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: 0 10px 22px rgba(13, 38, 66, 0.1);
+  overflow: hidden;
+}
+
+.litoChatReplyAvatarImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .litoChatTypingDots {

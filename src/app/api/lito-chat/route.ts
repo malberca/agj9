@@ -78,6 +78,6 @@ export async function POST(request: Request) {
   return Response.json({
     ok: true,
     sessionId,
-    message: "Lito ya le llevo tu mensaje al equipo.",
+    message: "Lito ya entrego tu mensaje.",
   });
 }
