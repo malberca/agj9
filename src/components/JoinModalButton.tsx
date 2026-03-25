@@ -34,6 +34,7 @@ export function JoinModalButton({
 }: JoinModalButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccessPreview, setIsSuccessPreview] = useState(false);
   const [submitMessage, setSubmitMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [form, setForm] = useState<JoinFormState>(initialState);
@@ -50,6 +51,14 @@ export function JoinModalButton({
       document.body.classList.remove("join-modal-open");
     };
   }, [isOpen]);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const isLocalPreview =
+      window.location.hostname === "localhost" && params.get("join-success-preview") === "1";
+
+    setIsSuccessPreview(isLocalPreview);
+  }, []);
 
   function updateField(
     field: keyof JoinFormState,
@@ -69,6 +78,15 @@ export function JoinModalButton({
     setIsOpen(false);
     setErrorMessage("");
     setSubmitMessage("");
+  }
+
+  function handleOpen() {
+    if (isSuccessPreview) {
+      setErrorMessage("");
+      setSubmitMessage("Gracias. Ya enviamos tus datos al equipo.");
+    }
+
+    setIsOpen(true);
   }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -117,7 +135,7 @@ export function JoinModalButton({
         size="m"
         weight="default"
         className={className}
-        onClick={() => setIsOpen(true)}
+        onClick={handleOpen}
       >
         {label}
       </Button>
@@ -189,7 +207,15 @@ export function JoinModalButton({
         {submitMessage ? (
           <div className="joinModalSuccess">
             <div className="joinModalSuccessInner">
+              <Image
+                src="/images/projects/project-01/lito_gracias_zoom.webp"
+                alt="Lito agradeciendo la adhesión"
+                width={420}
+                height={420}
+                className="joinModalSuccessImage"
+              />
               <div className="joinModalSuccessEyebrow">Lista Azul y Blanca</div>
+              <div className="joinModalSuccessSubeyebrow">Cacho Garcia Conduccion</div>
               <div className="joinModalSuccessTitle">Gracias</div>
               <div className="joinModalSuccessText">{submitMessage}</div>
             </div>

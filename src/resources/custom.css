@@ -539,6 +539,8 @@ button,
 .joinModal.is-success section {
   padding-top: 0 !important;
   padding-bottom: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
 }
 
 .joinModalTitleWrap {
@@ -604,17 +606,23 @@ button,
 }
 
 .joinModalSuccess {
+  position: relative;
   display: flex;
-  min-height: 20rem;
+  min-height: 22rem;
   align-items: center;
   justify-content: center;
   text-align: center;
+  overflow: visible;
 }
 
 .joinModalSuccessInner {
+  position: relative;
   width: 100%;
-  max-width: 20rem;
-  padding: 1.2rem 0 0.4rem;
+  max-width: none;
+  min-height: 22rem;
+  padding: 1.2rem 0 0.8rem;
+  isolation: isolate;
+  overflow: visible;
 }
 
 .joinModalSuccessEyebrow {
@@ -622,6 +630,15 @@ button,
   font-size: 0.76rem;
   font-weight: 700;
   letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.joinModalSuccessSubeyebrow {
+  margin-top: 0.35rem;
+  color: rgba(255, 255, 255, 0.86);
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
@@ -635,11 +652,45 @@ button,
   text-transform: uppercase;
 }
 
+.joinModalSuccessImage {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  z-index: 0;
+  width: min(18rem, 72vw);
+  height: auto;
+  max-width: none;
+  filter: drop-shadow(0 16px 28px rgba(7, 26, 48, 0.2));
+  -webkit-mask-image: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 1) 82%,
+    rgba(0, 0, 0, 0.85) 90%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 1) 82%,
+    rgba(0, 0, 0, 0.85) 90%,
+    rgba(0, 0, 0, 0) 100%
+  );
+}
+
 .joinModalSuccessText {
-  margin-top: 1rem;
+  position: relative;
+  z-index: 1;
+  margin-top: 16.8rem;
   color: rgba(255, 255, 255, 0.92);
   font-size: 1rem;
   line-height: 1.65;
+}
+
+.joinModalSuccessEyebrow,
+.joinModalSuccessSubeyebrow,
+.joinModalSuccessTitle {
+  position: relative;
+  z-index: 1;
 }
 
 .joinModalFooterSuccess {
@@ -687,9 +738,10 @@ button,
   position: fixed;
   right: 1rem;
   top: 50%;
-  z-index: 40;
+  z-index: 48;
   display: flex;
   justify-content: flex-end;
+  align-items: flex-end;
   pointer-events: none;
   transform: translateY(-50%);
 }
