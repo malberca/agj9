@@ -276,7 +276,7 @@ export default function Home() {
               />
               <Column fillWidth padding="24" gap="12" className="proposalCardBody">
                 <Text variant="label-default-s" className="proposalCardKicker">
-                  Mensaje politico
+                  Politica
                 </Text>
                 <Heading as="h2" variant="display-strong-s" wrap="balance" className="proposalCardTitle">
                   Es momento de recuperar el rumbo.
@@ -286,11 +286,33 @@ export default function Home() {
                   razon de ser. Hoy queremos volver a poner al afiliado en el
                   centro, con una conduccion presente, seria y comprometida.
                 </Text>
+                <Text variant="body-default-m" className="thinBodyText proposalCardText">
+                  Sabemos que los desafios cambiaron, y el gremio tiene que
+                  estar a la altura de esa realidad. No alcanza con sostener lo
+                  que existe: hay que mejorar, actualizar y construir nuevas
+                  respuestas para cada trabajador.
+                </Text>
+                <Text variant="body-default-m" className="thinBodyText proposalCardText">
+                  Queremos un sindicato que escuche, que este cerca y que actue
+                  a tiempo. Que acompane en lo cotidiano y que tambien piense
+                  en el futuro.
+                </Text>
+                <Text variant="body-default-m" className="thinBodyText proposalCardText">
+                  Como decia Juan Domingo Peron:
+                </Text>
+                <Text variant="body-default-m" className="proposalCardQuote">
+                  &ldquo;Primero la gente.&rdquo;
+                </Text>
+                <Text variant="body-default-m" className="thinBodyText proposalCardText">
+                  Porque representar de verdad no es solo estar, es hacerse
+                  cargo. Y ese es el camino que venimos a recuperar.
+                </Text>
               </Column>
             </Card>
 
             <Column fillWidth gap="16">
               <Card
+                className="voteCard"
                 fillWidth
                 radius="xl"
                 padding="24"
@@ -356,7 +378,7 @@ export default function Home() {
             <div className="editorialManifestoShell">
               <div className="editorialManifestoIntro">
                 <Text variant="label-default-s" className="editorialManifestoKicker">
-                  Modernizar para representar
+                  Nuestra Propuesta
                 </Text>
                 <Heading as="h2" variant="display-strong-s" className="editorialManifestoTitle">
                   Un sindicato preparado para el futuro

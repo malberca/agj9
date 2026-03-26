@@ -109,7 +109,7 @@ body.join-modal-open .siteShell {
 }
 
 .countdownEyebrow {
-  color: #00ed64 !important;
+  color: #0d4675 !important;
   font-size: 0.82rem;
   font-weight: 700;
   letter-spacing: 0.18em;
@@ -129,7 +129,7 @@ body.join-modal-open .siteShell {
 
 .countdownDateHint {
   margin-top: 0.55rem;
-  color: rgba(17, 17, 17, 0.66) !important;
+  color: #0d4675 !important;
   font-size: 0.84rem;
   font-weight: 400;
   text-align: center;
@@ -459,14 +459,28 @@ button,
   color: #333333 !important;
 }
 
-.proposalCardKicker {
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+.proposalCardQuote {
+  color: #0d4675 !important;
+  font-size: 1.08rem !important;
+  font-style: italic;
+  font-weight: 500 !important;
+  line-height: 1.5 !important;
 }
 
 .voteCardLabel {
-  color: #111111 !important;
+  color: #0d4675 !important;
   font-weight: 700 !important;
+}
+
+.voteCard {
+  background:
+    linear-gradient(180deg, rgba(222, 236, 250, 0.92) 0%, rgba(237, 244, 251, 0.98) 100%) !important;
+  border-color: rgba(13, 70, 117, 0.08) !important;
+  box-shadow: 0 18px 36px rgba(32, 48, 70, 0.05);
+}
+
+.voteCard h3 {
+  color: #0d4675 !important;
 }
 
 .voteCardBodyText {
@@ -483,11 +497,6 @@ button,
   background: #ffffff !important;
   border-color: rgba(178, 190, 202, 0.45) !important;
   box-shadow: 0 18px 36px rgba(32, 48, 70, 0.06);
-}
-
-.portalCardLabel {
-  color: #333333 !important;
-  font-weight: 700 !important;
 }
 
 .editorialManifestoSection {
@@ -507,10 +516,15 @@ button,
   border-bottom: 1px solid rgba(188, 200, 214, 0.34);
 }
 
+.newsHeroPanelKicker,
+.proposalCardKicker,
+.portalCardLabel,
 .editorialManifestoKicker {
-  color: #58718f !important;
-  font-weight: 500 !important;
-  letter-spacing: 0.12em;
+  font-family: var(--font-label), var(--font-body), sans-serif !important;
+  color: #0d4675 !important;
+  font-size: 0.76rem !important;
+  font-weight: 300 !important;
+  letter-spacing: 0.12em !important;
   text-transform: uppercase;
 }
 
