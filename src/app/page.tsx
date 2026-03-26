@@ -154,13 +154,12 @@ export default function Home() {
 
         <div className="newsHeroInner">
           <div className="newsHeroTop">
-            <Image
-              src="/images/logo/logo_w.webp"
+            <img
+              src="/images/logo/logo_w.webp?v=20260326"
               alt="Agrupacion Nueve de Julio"
               width={260}
               height={96}
               className="newsHeroLogo"
-              priority
             />
           </div>
 
