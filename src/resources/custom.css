@@ -92,6 +92,61 @@ body.join-modal-open .siteShell {
   overflow: hidden;
 }
 
+.petroPathSection {
+  width: 100%;
+  padding: 2rem 1rem 2.25rem;
+  background:
+    linear-gradient(180deg, rgba(13, 70, 117, 0.96) 0%, rgba(24, 102, 164, 0.96) 100%);
+  border-top: 1px solid rgba(13, 70, 117, 0.08);
+  border-bottom: 1px solid rgba(13, 70, 117, 0.08);
+}
+
+.petroPathInner {
+  display: flex;
+  width: 100%;
+  max-width: 920px;
+  margin: 0 auto;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+}
+
+.petroPathKicker {
+  color: rgba(255, 255, 255, 0.78) !important;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.petroPathTitle {
+  color: #ffffff !important;
+  text-align: center;
+}
+
+.petroPathMediaShell {
+  position: relative;
+  width: min(100%, 860px);
+  margin-top: 0.55rem;
+  border: 1px solid rgba(13, 70, 117, 0.12);
+  border-radius: 2rem;
+  background: #ffffff;
+  box-shadow: 0 20px 44px rgba(13, 70, 117, 0.08);
+  overflow: hidden;
+}
+
+.petroPathFrame {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 0;
+  background: #ffffff;
+}
+
+.petroPathGif {
+  aspect-ratio: 16 / 9;
+  object-fit: contain;
+}
+
 .countdownSection {
   width: 100%;
   margin: 0;
@@ -860,6 +915,10 @@ button,
 }
 
 @media (min-width: 900px) {
+  .petroPathSection {
+    padding: 2.4rem 2rem 2.8rem;
+  }
+
   .newsHeroInner {
     padding: 6rem 2rem 2rem;
   }

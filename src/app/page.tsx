@@ -252,6 +252,29 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="petroPathSection" aria-labelledby="camino-del-petroleo">
+        <div className="petroPathInner">
+          <Text
+            id="camino-del-petroleo"
+            as="span"
+            variant="label-default-s"
+            className="petroPathKicker"
+          >
+            cuidamos cada fase del proceso
+          </Text>
+          <Heading as="h2" variant="display-strong-s" className="petroPathTitle">
+            El Camino del Petroleo
+          </Heading>
+          <div className="petroPathMediaShell">
+            <img
+              src="/video/Extraccion.gif"
+              alt="El Camino del Petroleo"
+              className="petroPathFrame petroPathGif"
+            />
+          </div>
+        </div>
+      </section>
+
       <CountdownBlock targetIso="2026-10-15T00:00:00-03:00" />
 
       <Column fillWidth gap="xl" paddingBottom="16">
