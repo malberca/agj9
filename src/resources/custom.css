@@ -2825,7 +2825,7 @@ button,
 
 .showcaseIntroSpacer {
   width: 100%;
-  height: clamp(0.75rem, 2vw, 1.5rem);
+  height: 0;
 }
 
 .showcaseIntroEyebrow {
@@ -2859,9 +2859,11 @@ button,
 }
 
 .sumateModule {
-  width: 100%;
-  max-width: 1480px;
-  margin: 0 auto;
+  width: 100vw;
+  max-width: none;
+  margin: 0 0 2.4rem;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
 }
 
 .sumateModuleCard {
@@ -2870,9 +2872,9 @@ button,
   align-items: center;
   justify-content: space-between;
   gap: 1.2rem;
-  padding: 1.6rem 1.4rem;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 1.6rem;
+  padding: 1.8rem max(1.4rem, calc((100vw - 1480px) / 2 + 1.5rem));
+  border: 0;
+  border-radius: 0;
   background: #0d4675;
   box-shadow: 0 18px 40px rgba(13, 70, 117, 0.22);
   backdrop-filter: blur(16px);
@@ -2896,8 +2898,9 @@ button,
 .sumateModuleTitle {
   margin: 0;
   color: #ffffff;
-  font-family: var(--font-h2), Helvetica, Arial, sans-serif;
+  font-family: Helvetica, Arial, sans-serif;
   font-size: clamp(1.75rem, 3.3vw, 2.8rem);
+  font-weight: 700;
   line-height: 0.98;
   letter-spacing: -0.05em;
 }
@@ -2905,8 +2908,9 @@ button,
 .sumateModuleText {
   margin: 0;
   color: rgba(255, 255, 255, 0.86);
-  font-size: 1rem;
-  line-height: 1.6;
+  font-size: 0.9rem;
+  line-height: 1.65;
+  letter-spacing: 0.04em;
 }
 
 .sumateModuleTrigger {
@@ -3336,8 +3340,7 @@ button,
   }
 
   .sumateModuleCard {
-    padding: 1.2rem 1rem;
-    border-radius: 1.25rem;
+    padding: 1.25rem 1rem;
   }
 
   .sumateModuleTrigger {
