@@ -5,7 +5,7 @@ export function HeroSimple() {
   return (
     <section className="heroSimple">
       <video
-        className="heroSimpleVideo"
+        className="heroSimpleVideo heroSimpleVideoDesktop"
         autoPlay
         muted
         playsInline
@@ -13,6 +13,16 @@ export function HeroSimple() {
         aria-hidden="true"
       >
         <source src="/video/vota.mp4" type="video/mp4" />
+      </video>
+      <video
+        className="heroSimpleVideo heroSimpleVideoMobile"
+        autoPlay
+        muted
+        playsInline
+        preload="metadata"
+        aria-hidden="true"
+      >
+        <source src="/video/vota_ol.mp4" type="video/mp4" />
       </video>
       <div className="heroSimpleInner">
         <div className="heroSimpleCopy">

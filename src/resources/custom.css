@@ -466,6 +466,10 @@ body.proposal-letter-open .headerCountdownMarquee {
   pointer-events: none;
 }
 
+.heroSimpleVideoMobile {
+  display: none;
+}
+
 .heroSimple::before {
   content: "";
   position: absolute;
@@ -3308,6 +3312,14 @@ button,
 }
 
 @media (max-width: 767px) {
+  .heroSimpleVideoDesktop {
+    display: none;
+  }
+
+  .heroSimpleVideoMobile {
+    display: block;
+  }
+
   .topArrivalBadge {
     margin-top: 4rem;
     padding: 0 0.75rem;
