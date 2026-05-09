@@ -85,7 +85,13 @@ export const Footer = () => {
               className={styles.footerCampaignLogo}
             />
           </span>
-          <span className={styles.footerCampaignLogoFrame} aria-label="Logo Mano Consultora">
+          <a
+            className={styles.footerCampaignLogoFrame}
+            aria-label="Mano Digital Consulting"
+            href="https://ma-no.work"
+            target="_blank"
+            rel="noreferrer"
+          >
             <Image
               src="/images/logo/mano-gr.svg"
               alt="Logo Mano Consultora"
@@ -93,7 +99,7 @@ export const Footer = () => {
               height={70}
               className={styles.footerCampaignLogo}
             />
-          </span>
+          </a>
         </Row>
         <Row gap="16">
           {social.map(

@@ -6,6 +6,7 @@ import { Fragment, useEffect, useState } from "react";
 import { Flex, Line, Row, ToggleButton } from "@once-ui-system/core";
 
 import { routes, display, person, about, blog, work, gallery } from "@/resources";
+import { ProposalsModalButton } from "./ProposalsModalButton";
 import { ThemeToggle } from "./ThemeToggle";
 import styles from "./Header.module.scss";
 
@@ -46,17 +47,15 @@ export const Header = () => {
   const pathname = usePathname() ?? "";
   const [atTop, setAtTop] = useState(true);
 
-  const disabledNavItems = [
+  const leadingDisabledNavItems = [
     {
       key: "/about",
       icon: "person" as const,
       label: about.label,
     },
-    {
-      key: "/work",
-      icon: "grid" as const,
-      label: work.label,
-    },
+  ];
+
+  const trailingDisabledNavItems = [
     {
       key: "/blog",
       icon: "book" as const,
@@ -118,7 +117,44 @@ export const Header = () => {
                 <ToggleButton prefixIcon="home" href="/" selected={pathname === "/"} />
               )}
               <Line background="neutral-alpha-medium" vert maxHeight="24" />
-              {disabledNavItems.map((item) => (
+              {leadingDisabledNavItems.map((item) => (
+                <Fragment key={item.key}>
+                  <Row s={{ hide: true }}>
+                    <ToggleButton
+                      prefixIcon={item.icon}
+                      label={item.label}
+                      disabled
+                      tabIndex={-1}
+                      aria-disabled="true"
+                      className={styles.disabledToggle}
+                    />
+                  </Row>
+                  <Row hide s={{ hide: false }}>
+                    <ToggleButton
+                      prefixIcon={item.icon}
+                      disabled
+                      tabIndex={-1}
+                      aria-disabled="true"
+                      className={styles.disabledToggle}
+                    />
+                  </Row>
+                </Fragment>
+              ))}
+              <Row s={{ hide: true }}>
+                <ProposalsModalButton
+                  label={work.label}
+                  className={styles.proposalToggle}
+                  showIcon
+                />
+              </Row>
+              <Row hide s={{ hide: false }}>
+                <ProposalsModalButton
+                  label=""
+                  className={styles.proposalToggleIconOnly}
+                  showIcon
+                />
+              </Row>
+              {trailingDisabledNavItems.map((item) => (
                 <Fragment key={item.key}>
                   <Row s={{ hide: true }}>
                     <ToggleButton

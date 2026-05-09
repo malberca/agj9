@@ -9,9 +9,9 @@
 }
 
 .position {
-    top: 2.1rem;
+    top: 14.6rem;
     left: 0;
-    padding-top: 0.75rem;
+    padding-top: 1rem;
     isolation: isolate;
 }
 
@@ -63,12 +63,59 @@
     box-shadow: 0 12px 30px rgba(18, 32, 58, 0.12) !important;
     backdrop-filter: blur(18px) saturate(140%);
     -webkit-backdrop-filter: blur(18px) saturate(140%);
+    color: #0d4675 !important;
+}
+
+.navGlass :global(a),
+.navGlass :global(button),
+.navGlass :global(span) {
+    color: #0d4675 !important;
+}
+
+.navGlass :global(svg) {
+    color: #0d4675 !important;
+    fill: currentColor;
+    stroke: currentColor;
 }
 
 .disabledToggle {
-    opacity: 0.42;
+    opacity: 0.78;
     pointer-events: none;
-    filter: saturate(0.7);
+    filter: saturate(0.9);
+    color: #0d4675 !important;
+}
+
+.disabledToggle :global(svg),
+.disabledToggle :global(span) {
+    color: #0d4675 !important;
+    fill: currentColor;
+    stroke: currentColor;
+}
+
+.proposalToggle,
+.proposalToggleIconOnly {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 2.5rem;
+    padding: 0.45rem 0.8rem;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: #0d4675;
+    font: inherit;
+    cursor: pointer;
+    transition: background-color 180ms ease, opacity 180ms ease;
+}
+
+.proposalToggle:hover,
+.proposalToggleIconOnly:hover {
+    background: rgba(13, 70, 117, 0.08);
+}
+
+.proposalToggleIconOnly {
+    padding: 0.45rem;
 }
 
 @media (max-width: breakpoints.$s) {
