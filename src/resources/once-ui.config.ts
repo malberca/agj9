@@ -18,7 +18,7 @@ const baseURL: string = "https://agj9.ar";
 const routes: RoutesConfig = {
   "/": true,
   "/about": false,
-  "/work": false,
+  "/work": true,
   "/blog": false,
   "/gallery": false,
 };

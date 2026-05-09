@@ -14,7 +14,7 @@ import {
   RevealFx,
   SpacingToken,
 } from "@once-ui-system/core";
-import { Footer, Header, RouteGuard, Providers, LitoChat } from "@/components";
+import { Footer, Header, RouteGuard, Providers, LitoChat, HeaderCountdownMarquee } from "@/components";
 import { baseURL, effects, fonts, style, dataStyle, home } from "@/resources";
 
 const h2Font = Anton({
@@ -160,6 +160,7 @@ export default async function RootLayout({
                 </span>
               </div>
             </div>
+            <HeaderCountdownMarquee />
             <RevealFx fill position="absolute">
               <Background
                 mask={{

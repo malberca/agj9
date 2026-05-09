@@ -106,7 +106,7 @@ const work: Work = {
   path: "/work",
   label: "Propuestas",
   title: "Propuestas",
-  description: "Iniciativas y ejes de trabajo",
+  description: "Propuestas de la Lista Azul y Blanca para el futuro del gremio.",
 };
 
 const gallery: Gallery = {

@@ -10,4 +10,5 @@ export { ThemeToggle } from "@/components/ThemeToggle";
 export { LitoChat } from "@/components/LitoChat";
 export { JoinModalButton } from "@/components/JoinModalButton";
 export { CountdownBlock } from "@/components/CountdownBlock";
+export { HeaderCountdownMarquee } from "@/components/HeaderCountdownMarquee";
 export { CustomMDX } from "@/components/mdx";
